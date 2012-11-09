@@ -16,9 +16,9 @@ else
     s.version = Argus::VERSION
     s.summary = "Ruby API for a Parrot AD Drone Quadcopter"
     s.description = <<-EOF.delete "\n"
-Argus is a Ruby library to interface to a Parrot AR Drone quadcopter.
+Argus is a Ruby interface to a Parrot AR Drone quadcopter.
 
-Argus is experimental.  Use at your own risk.
+Argus is extremely experimental at this point.  Use at your own risk.
     EOF
 
     s.required_ruby_version = '>= 1.9'
