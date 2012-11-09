@@ -85,10 +85,15 @@ module Argus
 
     private
 
+    REF_BASE = [18, 20, 22, 24, 28].
+      inject(0) { |flag, bitnum| flag | (1 << bitnum) }
+    REF_FLY_BIT = (1 << 9)
+    REF_EMERGENCY_BIT = (1 << 8)
+
     def update_ref
-      n = 0
-      n |= 0x200 if @flying
-      n |= 0x100 if @emergency
+      n = REF_BASE
+      n |= REF_FLY_BIT if @flying
+      n |= REF_EMERGENCY_BIT if @emergency
       @at_commander.ref(n.to_s)
       self
     end

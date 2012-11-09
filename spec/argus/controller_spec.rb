@@ -2,6 +2,16 @@ require 'spec_helper'
 
 describe Argus::Controller do
 
+  REF_BASE = 0x11540000
+
+  def ref_bits(n=nil)
+    if n.nil?
+      REF_BASE.to_s
+    else
+      (REF_BASE | (1 << n)).to_s
+    end
+  end
+
   Given(:at) { flexmock(:on, Argus::ATCommander) }
   Given(:controller) { Argus::Controller.new(at) }
 
@@ -10,24 +20,24 @@ describe Argus::Controller do
 
     context "when taking off" do
       When(:result) { controller.take_off }
-      Then { at.should have_received(:ref).with("512") }
+      Then { at.should have_received(:ref).with(ref_bits(9)) }
     end
 
-    context "when landing off" do
+    context "when landing" do
       When(:result) { controller.land }
-      Then { at.should have_received(:ref).with("0").twice }
+      Then { at.should have_received(:ref).with(ref_bits).twice }
     end
 
     context "when emergency" do
       Given { controller.take_off }
       When(:result) { controller.emergency }
-      Then { at.should have_received(:ref).with("256") }
+      Then { at.should have_received(:ref).with(ref_bits(8)) }
     end
 
     context "when taking off after an emergency" do
       Given { controller.emergency }
       When(:result) { controller.take_off }
-      Then { at.should have_received(:ref).with("512") }
+      Then { at.should have_received(:ref).with(ref_bits(9)) }
     end
 
     context "when hovering" do
