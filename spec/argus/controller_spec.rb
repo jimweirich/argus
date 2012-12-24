@@ -50,7 +50,7 @@ describe Argus::Controller do
       Then { at.should have_received(:pcmd).with("1,0,-1085485875,0,0") }
     end
 
-    context "when moving forward" do
+    context "when moving backward" do
       When(:result) { controller.backward(0.80) }
       Then { at.should have_received(:pcmd).with("1,0,1061997773,0,0") }
     end
