@@ -2,7 +2,7 @@ module Argus
   module Version # :nodoc: all
     NUMBERS = [
       MAJOR = 0,
-      MINOR = 0,
+      MINOR = 1,
       BUILD = 0,
     ]
   end
