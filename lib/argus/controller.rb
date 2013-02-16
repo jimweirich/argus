@@ -83,6 +83,14 @@ module Argus
       update_pcmd
     end
 
+    def front_camera
+      @at_commander.config("video:video_channel", "2")
+    end
+    
+    def bottom_camera
+      @at_commander.config("video:video_channel", "1")
+    end
+
     private
 
     REF_BASE = [18, 20, 22, 24, 28].

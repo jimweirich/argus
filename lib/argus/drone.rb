@@ -27,6 +27,7 @@ module Argus
        left right
        up down
        turn_left turn_right
+       front_camera bottom_camera
     ).each do |meth|
       define_method(meth) { |*args|
         @controller.send(meth, *args)
