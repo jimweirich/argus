@@ -1,4 +1,7 @@
 require 'argus/at_commander'
 require 'argus/controller'
 require 'argus/udp_sender'
+require 'argus/udp_nav_streamer'
+require 'argus/nav_data'
+require 'argus/nav_streamer'
 require 'argus/drone'
