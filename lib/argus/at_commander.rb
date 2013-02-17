@@ -53,7 +53,7 @@ module Argus
     end
 
     def config(key, value)
-#      command("CONFIG", "\"#{key}\",\"#{value}\"")
+      @buffer << "AT*CONFIG=605,\"#{key}\",\"#{value}\"\r"
     end
 
     private
