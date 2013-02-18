@@ -2,7 +2,7 @@ require 'socket'
 module Argus
   class TcpVideoStreamer
     def initialize(tcp_socket=nil, host='192.168.1.1', port=5555)
-      @tcp_socket = socket || TCPSocket.new(host, port)
+      @tcp_socket = tcp_socket || TCPSocket.new(host, port)
       @host = host
       @port = port
     end
