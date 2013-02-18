@@ -3,7 +3,7 @@ require 'argus'
 nav = Argus::NavStreamer.new
 nav.start
 
-navdata = nav.recieve
+navdata = nav.receive
 
 p "sequence number: #{navdata.sequence_number}"
 p "vision flag: #{navdata.vision_flag}"

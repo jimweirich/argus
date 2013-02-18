@@ -2,12 +2,10 @@ require 'socket'
 
 module Argus
   class Drone
-    def initialize
-      @socket = UDPSocket.new
-      @sender = Argus::UdpSender.new(@socket)
-
+    def initialize(socket=nil, host='192.168.1.1', port='5556')
+      @socket = socket || UDPSocket.new
+      @sender = Argus::UdpSender.new(@socket, host, port)
       @at = Argus::ATCommander.new(@sender)
-
       @controller = Argus::Controller.new(@at)
     end
 

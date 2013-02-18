@@ -1,15 +1,15 @@
 require 'socket'
 module Argus
   class TcpVideoStreamer
-    def initialize(tcp_socket, host=nil, port=nil)
-      @tcp_socket = tcp_socket
-      @host = host || '192.168.1.1'
-      @port = port || 5555
+    def initialize(tcp_socket=nil, host='192.168.1.1', port=5555)
+      @tcp_socket = socket || TCPSocket.new(host, port)
+      @host = host
+      @port = port
     end
 
-    def start_stream
-      sock = UDPSocket.new
-      sock.send("\x01\x00\x00\x00",0,@host,@port)
+    def start_stream(udp_socket=nil)
+      sock = udp_socket || UDPSocket.new
+      sock.send("\x01\x00\x00\x00", 0, @host, @port)
       sock.close
     end
 
