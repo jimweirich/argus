@@ -11,7 +11,7 @@ module Argus
       @streamer.start_stream
     end
 
-    def receive
+    def receive_data
       @streamer.receive_packet
     end
   end
