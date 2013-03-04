@@ -8,3 +8,5 @@ require 'argus'
 RSpec.configure do |config|
   config.mock_with :flexmock
 end
+
+RSpec::Given.use_natural_assertions
