@@ -1,16 +1,41 @@
 module Argus
   class NavData
-    attr_accessor :drone_state, :options, :vision_flag, :sequence_number
+    attr_accessor :state_mask, :vision_flag, :sequence_number, :options
+
     def initialize(data)
+      # puts "--RAW--"            # DBG:
+      # puts data.inspect         # DBG:
       @data = data
+      # puts "--PARSED--"         # DBG:
       parse_nav_data(@data)
+        # .tap { |d| puts d.inspect } # DBG:
     end
 
-    private
+    def self.bit_masks(*names)
+      names.each.with_index do |name, bit_number|
+        if name.is_a?(Array)
+          name, off_value, on_value = name
+        else
+          off_value = false
+          on_value = true
+        end
+        define_method(name) { @state_mask[bit_number] == 0 ? off_value : on_value }
+      end
+    end
 
-    def parse_nav_data(data)
-      state = data.unpack("V").first
-      @drone_state = {
+    bit_masks(
+      :flying?, :video_enabled?, :vision_enabled?, [:control_algorithm, :euler, :angular_speed],
+      :altitude_control_algorithm_active?, :start_button_pressed?, :control_command_ack?, :camera_ready?,
+      :travelling_enabled?, :usb_ready?, [:mode, :all, :demo], :bootstrap?,
+      :moter_problem?, :communication_lost?, :software_fault?, :low_battery?,
+      :emergency_landing_requested?, :timer_elapsed?, :magnometer_needs_calibration?, :angles_out_of_range?,
+      :too_much_wind?, :ultrasonic_sensor_deaf?, :cutout_detected?, :pic_version_number_ok?,
+      :at_codec_thread_on?, :navdata_thread_on?, :video_thread_on?, :acquisition_thread_on?,
+      :control_watchdog_delayed?, :adc_watchdog_delayed?, :com_watchdog_problem?, :emergency_landing?)
+
+    def drone_state
+      state = @state_mask
+      @drone_state ||= {
         :flying                     =>state[0],  #/*!< FLY MASK : (0) ardrone is landed, (1) ardrone is flying */
         :videoEnabled               =>state[1],  #/*!< VIDEO MASK : (0) video disable, (1) video enable */
         :visionEnabled              =>state[2],  #/*!< VISION MASK : (0) vision disable, (1) vision enable */
@@ -44,6 +69,12 @@ module Argus
         :comWatchdogProblem         =>state[30], #/*!< Communication Watchdog : (1) com problem, (0) Com is ok */
         :emergencyLanding           =>state[31]  #/*!< Emergency landing : (0) no emergency, (1) emergency */
       }
+    end
+
+    private
+
+    def parse_nav_data(data)
+      @state_mask = data.unpack("V").first
       data.slice!(0..3)
       @sequence_number = data.unpack("V").first
       data.slice!(0..3)
