@@ -13,11 +13,10 @@ module Argus
 
     def receive_packet
       data, from = @udp_socket.recvfrom(1024)
-      if data.unpack("V").first == "0x55667788".hex
-        data.slice!(0..3)
-        return NavData.new(data)
+      if data.unpack("V").first == 0x55667788
+        NavData.new(data)
       else
-        return "Not nav data!"
+        nil
       end
     end
   end

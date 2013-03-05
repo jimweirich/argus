@@ -8,8 +8,9 @@ module Bytes
   end
 
   def make_nav_data(*options)
-    result = options.flatten
+    result = [Bytes.int32(0x55667788) + options].flatten
     add_checksum(result)
+    result.pack("C*")
   end
 
   def make_header(state_bits, seq_number, vision_flag)
@@ -27,28 +28,10 @@ module Argus
     Given(:state_bits) { 0xcf8a0c94 }
     Given(:seq_num) { 173064 }
     Given(:vision_flag) { 0 }
-    Given(:raw_nav_bytes) {
-      Bytes.make_nav_data(
-        Bytes.make_header(state_bits, seq_num, vision_flag))
-    }
-    Given(:raw_nav) { raw_nav_bytes.pack("C*") }
-    Given(:nav_data) { NavData.new(raw_nav) }
-    Given(:state) {
-      {
-        :flying=>0, :videoEnabled=>0, :visionEnabled=>1, :controlAlgorithm=>0,
-        :altitudeControlAlgorithm=>1, :startButtonState=>0, :controlCommandAck=>0,
-        :cameraReady=>1, :travellingEnabled=>0, :usbReady=>0, :navdataDemo=>1,
-        :navdataBootstrap=>1, :motorProblem=>0, :communicationLost=>0,
-        :softwareFault=>0, :lowBattery=>0, :userEmergencyLanding=>0, :timerElapsed=>1,
-        :MagnometerNeedsCalibration=>0, :anglesOutOfRange=>1, :tooMuchWind=>0,
-        :ultrasonicSensorDeaf=>0, :cutoutDetected=>0, :picVersionNumberOk=>1,
-        :atCodecThreadOn=>1, :navdataThreadOn=>1, :videoThreadOn=>1,
-        :acquisitionThreadOn=>1, :controlWatchdogDelay=>0, :adcWatchdogDelay=>0,
-        :comWatchdogProblem=>1, :emergencyLanding=>1,
-      }
-    }
+    Given(:raw_header) { Bytes.make_header(state_bits, seq_num, vision_flag) }
+    Given(:raw_nav_bytes) { Bytes.make_nav_data(raw_header) }
+    Given(:nav_data) { NavData.new(raw_nav_bytes) }
 
-    Then { nav_data.drone_state == state }
     Then { nav_data.sequence_number == 173064 }
     Then { nav_data.vision_flag == 0 }
 
@@ -70,7 +53,8 @@ module Argus
 
       # Matcher for handling the mask testing for the state mask.
       #
-      # Usage: bit(5).should be_the_mask_for(:method [, off_value, on_value])
+      # Usage:
+      #    bit(5).should be_the_mask_for(:method [, off_value, on_value])
       #
       # If off_value and on_value are not given, then false/true will
       # be assumed.
@@ -89,16 +73,14 @@ module Argus
         # Try one of the alternatives. Sending method to the navdata
         # constructed with mask should return teh expected value.
         def try_alternative(method, mask, expected)
-          raw = [Bytes.int32(mask), Bytes.int32(seq_num), Bytes.int32(vision_flag)].flatten.pack("C*")
+          raw = Bytes.make_nav_data(Bytes.make_header(mask, 1, 0))
           nav_data = NavData.new(raw)
           result = nav_data.send(method)
-          if result != expected
-            @msg = "expected mask of 0x#{'%08x' % mask} with #{method}\n" +
-              "to return: #{expected.inspect}\n" +
-              "got:       #{result.inspect}"
-            return false
-          end
-          true
+          return true if result == expected
+          @msg = "expected mask of 0x#{'%08x' % mask} with #{method}\n" +
+            "to return: #{expected.inspect}\n" +
+            "got:       #{result.inspect}"
+          false
         end
       end
 
