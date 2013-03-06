@@ -1,15 +1,5 @@
-require 'argus/at_commander'
-require 'argus/controller'
-require 'argus/drone'
-require 'argus/float_encoding'
-require 'argus/invalid_nav_data_error'
-require 'argus/nav_data'
-require 'argus/nav_option'
-require 'argus/nav_option_checksum'
-require 'argus/nav_option_demo'
-require 'argus/nav_option_unknown'
-require 'argus/nav_streamer'
-require 'argus/pave_parser'
-require 'argus/tcp_video_streamer'
-require 'argus/udp_nav_streamer'
-require 'argus/udp_sender'
+# Require all the top level files in argus/*.rb
+
+Dir[File.dirname(__FILE__) + "/argus/*.rb"].sort.each do |pn|
+  require "argus/#{File.basename(pn, '.rb')}"
+end
