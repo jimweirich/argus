@@ -3,12 +3,8 @@ module Argus
     attr_accessor :state_mask, :vision_flag, :sequence_number, :options
 
     def initialize(data)
-      # puts "--RAW--"            # DBG:
-      # puts data.inspect         # DBG:
       @data = data
-      # puts "--PARSED--"         # DBG:
       parse_nav_data(@data)
-        # .tap { |d| puts d.inspect } # DBG:
     end
 
     def self.bit_mask_readers(*names)
