@@ -12,7 +12,7 @@ module Argus
     end
 
     context "when receiving good data" do
-      Given(:bytes) { [0x88, 0x77, 0x66, 0x55, 0x34, 0x12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0].pack("C*") }
+      Given(:bytes) { Bytes.make_nav_data(Bytes.make_header(0x1234, 0, 0)) }
       Given { socket.should_receive(:recvfrom => bytes) }
       When(:nav_data) { streamer.receive_packet }
       Then { nav_data.state_mask == 0x1234}

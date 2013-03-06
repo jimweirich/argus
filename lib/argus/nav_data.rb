@@ -62,10 +62,17 @@ module Argus
 
     def parse_nav_data(data)
       tag, @state_mask, @sequence_number, @vision_flag = data.unpack("VVVV")
+      parse_nav_options(data[16..-1])
+    end
+
+    def parse_nav_options(data)
       @options = []
-      option1 = {}
-      option1[:id], option1[:size], option1[:data] = data[16..-1].unpack("vvv")
-      @options.push(option1)
+      loop do
+        opt = NavOption.parse(data)
+        data = data[opt.size .. -1]
+        @options << opt
+        break if opt.tag == 0xFFFF
+      end
     end
   end
 end

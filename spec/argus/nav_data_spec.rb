@@ -1,28 +1,5 @@
 require 'spec_helper'
 
-module Bytes
-  module_function
-
-  def int32(n)
-    [n].pack("V").unpack("C*")
-  end
-
-  def make_nav_data(*options)
-    result = [Bytes.int32(0x55667788) + options].flatten
-    add_checksum(result)
-    result.pack("C*")
-  end
-
-  def make_header(state_bits, seq_number, vision_flag)
-    Bytes.int32(state_bits) + Bytes.int32(seq_number) + Bytes.int32(vision_flag)
-  end
-
-  def add_checksum(bytes)
-    [0xff, 0xff, 0x08, 0x00, 0x61, 0x04, 0x00, 0x00].each do |b| bytes << b end
-    bytes
-  end
-end
-
 module Argus
   describe NavData do
     Given(:state_bits) { 0xcf8a0c94 }
@@ -30,7 +7,8 @@ module Argus
     Given(:vision_flag) { 0 }
     Given(:raw_header) { Bytes.make_header(state_bits, seq_num, vision_flag) }
     Given(:raw_nav_bytes) { Bytes.make_nav_data(raw_header) }
-    Given(:nav_data) { NavData.new(raw_nav_bytes) }
+
+    When(:nav_data) { NavData.new(raw_nav_bytes) }
 
     Then { nav_data.sequence_number == 173064 }
     Then { nav_data.vision_flag == 0 }
@@ -137,7 +115,21 @@ module Argus
       end
     end
 
-    Then { nav_data.options.size == 1 }
-
+    describe "#options" do
+      Then { nav_data.options.size == 1 }
+      Then { nav_data.options.first.is_a?(NavOptionChecksum) }
+    end
   end
+
+  describe "multiple options" do
+    Given(:raw_header) { Bytes.make_header(0, 0, 0) }
+    Given(:raw_nav_bytes) {
+      Bytes.make_nav_data(raw_header, Bytes.make_demo_data)
+    }
+    When(:nav_data) { NavData.new(raw_nav_bytes) }
+    Then { nav_data.options.size == 2 }
+    Then { nav_data.options[0].is_a?(NavOptionDemo) }
+    Then { nav_data.options[1].is_a?(NavOptionChecksum) }
+  end
+
 end
