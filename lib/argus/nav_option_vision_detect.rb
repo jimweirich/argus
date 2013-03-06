@@ -57,7 +57,7 @@ module Argus
     end
 
     def detections
-      (0...detected_count).map { |i| Detection.new(self, i) }
+      @detections ||= (0...detected_count).map { |i| Detection.new(self, i) }
     end
 
     def self.tag
