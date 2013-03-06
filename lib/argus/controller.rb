@@ -1,5 +1,8 @@
+require 'argus/float_encoding'
+
 module Argus
   class Controller
+    include FloatEncoding
 
     def initialize(at_commander)
       @at_commander = at_commander
@@ -86,7 +89,7 @@ module Argus
     def front_camera
       @at_commander.config("video:video_channel", "2")
     end
-    
+
     def bottom_camera
       @at_commander.config("video:video_channel", "1")
     end
@@ -120,10 +123,6 @@ module Argus
       end
       @at_commander.pcmd(data)
       self
-    end
-
-    def encode_float(float)
-      [float].pack('g').unpack("l>").first
     end
 
   end

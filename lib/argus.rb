@@ -1,6 +1,7 @@
 require 'argus/at_commander'
 require 'argus/controller'
 require 'argus/drone'
+require 'argus/float_encoding'
 require 'argus/invalid_nav_data_error'
 require 'argus/nav_data'
 require 'argus/nav_option'
