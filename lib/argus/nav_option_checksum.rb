@@ -1,17 +1,16 @@
+require 'argus/cfields'
 require 'argus/nav_option'
+require 'argus/nav_tag'
 
 module Argus
 
   class NavOptionChecksum < NavOption
-    attr_reader :checksum
+    include CFields
 
-    def initialize(raw_data)
-      super
-      @checksum = raw_data.unpack("x4V").first
-    end
+    uint32_t :checksum
 
     def self.tag
-      0xffff
+      NavTag::CHECKSUM
     end
 
     NavOption.register(self)

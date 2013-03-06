@@ -1,6 +1,7 @@
-require 'argus/nav_option'
-require 'argus/float_encoding'
 require 'argus/cfields'
+require 'argus/float_encoding'
+require 'argus/nav_option'
+require 'argus/nav_tag'
 
 module Argus
 
@@ -46,16 +47,12 @@ module Argus
       :trans_looping,
     ]
 
-    def initialize(raw_data)
-      super
-    end
-
     def control_state_name
       CONTROL_STATE_NAMES[ctrl_state]
     end
 
     def self.tag
-      0
+      NavTag::DEMO
     end
 
     NavOption.register(self)

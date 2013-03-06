@@ -1,3 +1,5 @@
+require 'argus/float_encoding'
+
 module Argus
 
   module CFields

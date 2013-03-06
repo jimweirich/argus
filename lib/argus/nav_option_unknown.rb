@@ -2,7 +2,7 @@ module Argus
 
   class NavOptionUnknown < NavOption
     def self.tag
-      0xfffe
+      NavTag::UNKNOWN
     end
   end
 

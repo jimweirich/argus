@@ -7,7 +7,7 @@ module Argus
     end
 
     Given(:raw_data) { [
-        0, 148,
+        NavTag::DEMO, 148,
         3, 0xcacacaca,
         f(5.0), f(6.0), f(7.0),
         -100000,
