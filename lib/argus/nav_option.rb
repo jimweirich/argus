@@ -11,9 +11,12 @@ module Argus
 
     def self.parse(raw_data)
       tag = raw_data.unpack("v").first
-      option = options[tag]
-      raise Argus::InvalidNavDataError, "unrecognized tag #{tag}" if option.nil?
+      option = options[tag] || NavOptionUnknown
       option.new(raw_data)
+    end
+
+    def size
+      @size < 4 ? 4 : @size
     end
   end
 

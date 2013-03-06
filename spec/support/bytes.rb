@@ -10,13 +10,16 @@ module Bytes
   end
 
   def make_nav_data(*options)
-    result = [Bytes.int32(0x55667788) + options].flatten
+    result = options.flatten
     add_checksum(result)
     result.pack("C*")
   end
 
   def make_header(state_bits, seq_number, vision_flag)
-    Bytes.int32(state_bits) + Bytes.int32(seq_number) + Bytes.int32(vision_flag)
+    Bytes.int32(0x55667788) +
+      Bytes.int32(state_bits) +
+      Bytes.int32(seq_number) +
+      Bytes.int32(vision_flag)
   end
 
   def make_demo_data

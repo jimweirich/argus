@@ -122,14 +122,26 @@ module Argus
   end
 
   describe "multiple options" do
-    Given(:raw_header) { Bytes.make_header(0, 0, 0) }
-    Given(:raw_nav_bytes) {
-      Bytes.make_nav_data(raw_header, Bytes.make_demo_data)
-    }
-    When(:nav_data) { NavData.new(raw_nav_bytes) }
-    Then { nav_data.options.size == 2 }
-    Then { nav_data.options[0].is_a?(NavOptionDemo) }
-    Then { nav_data.options[1].is_a?(NavOptionChecksum) }
+    context "with good data" do
+      Given(:raw_header) { Bytes.make_header(0, 0, 0) }
+      Given(:raw_nav_bytes) {
+        Bytes.make_nav_data(raw_header, Bytes.make_demo_data)
+      }
+      When(:nav_data) { NavData.new(raw_nav_bytes) }
+      Then { nav_data.options.size == 2 }
+      Then { nav_data.options[0].is_a?(NavOptionDemo) }
+      Then { nav_data.options[1].is_a?(NavOptionChecksum) }
+    end
+
+    context "with short data" do
+      Given(:raw_nav_bytes) {
+        Bytes.make_header(0, 0, 0).pack("C*") +
+        [4321, 100, 0].pack("vvV")
+      }
+      When(:nav_data) { NavData.new(raw_nav_bytes) }
+      Then { nav_data.options.size == 1 }
+      Then { nav_data.options[0].is_a?(NavOptionUnknown) }
+    end
   end
 
 end

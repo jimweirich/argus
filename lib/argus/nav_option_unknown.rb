@@ -1,8 +1,6 @@
-require 'argus/nav_option'
-
 module Argus
 
-  class NavOptionDemo < NavOption
+  class NavOptionUnknown < NavOption
     attr_reader :tag
 
     def initialize(raw_data)
@@ -10,10 +8,8 @@ module Argus
     end
 
     def self.tag
-      0
+      0xfffe
     end
-
-    NavOption.register(self)
   end
 
 end

@@ -2,8 +2,8 @@ require 'argus/nav_option'
 
 module Argus
 
-  class NavOptionChecksum
-    attr_reader :tag, :size, :checksum
+  class NavOptionChecksum < NavOption
+    attr_reader :tag, :checksum
 
     def initialize(raw_data)
       @tag, @size, @checksum = raw_data.unpack("vvV")
