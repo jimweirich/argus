@@ -8,7 +8,9 @@ module Argus
   class NavOptionDemo < NavOption
     include CFields
 
-    uint32_t :ctrl_state               # Flying state (landed, flying, hovering, etc.) defined in CTRL_STATES enum.
+    uint32_t :ctrl_state               # Flying state (landed, flying,
+                                       # hovering, etc.) defined in
+                                       # CTRL_STATES enum.
     uint32_t :vbat_flying_percentage   # battery voltage filtered (mV)
 
     float32_t :theta                   # UAV's pitch in milli-degrees
@@ -21,7 +23,9 @@ module Argus
     float32_t :vy                      # UAV's estimated linear velocity
     float32_t :vz                      # UAV's estimated linear velocity
 
-    uint32_t :num_frames               # streamed frame index // Not used -> To integrate in video stage.
+    uint32_t :num_frames               # streamed frame index // Not
+                                       # used -> To integrate in video
+                                       # stage.
 
     # Camera parameters compute by detection
     matrix33_t :detection_camera_rot   # Deprecated ! Don't use !
