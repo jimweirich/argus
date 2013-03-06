@@ -71,7 +71,6 @@ module Argus
         opt = NavOption.parse(data)
         data = data[opt.size .. -1]
         @options << opt
-        break if opt.tag == 0xFFFF
         break if data.nil? || data.empty?
       end
     end
