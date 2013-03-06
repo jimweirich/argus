@@ -33,40 +33,48 @@ module Argus
         result
       end
 
-      def uint32_t(name)
-        index = allot
-        format_string << "V"
-        define_method(name) { @data[index] }
+      def define_field(name, size, format, width=1, &transform)
+        if size
+          index = allot(width*size)
+          format_string << "#{format}#{width*size}"
+          if transform
+            define_method(name) { @data[index, size].map(&transform) }
+          else
+            define_method(name) { @data[index, size] }
+          end
+        else
+          index = allot(width)
+          format_string << (width==1 ? format : "#{format}#{width}")
+          if transform
+            define_method(name) { transform.call(@data[index]) }
+          else
+            define_method(name) { @data[index] }
+          end
+        end
       end
 
-      def uint16_t(name)
-        index = allot
-        format_string << "v"
-        define_method(name) { @data[index] }
+      def uint32_t(name, size=nil)
+        define_field(name, size, "V")
       end
 
-      def float32_t(name)
-        index = allot
-        format_string << "V"
-        define_method(name) { decode_float(@data[index]) }
+      def uint16_t(name, size=nil)
+        define_field(name, size, "v")
       end
 
-      def int32_t(name)
-        index = allot
-        format_string << "l<"
-        define_method(name) { @data[index] }
+      def float32_t(name, size=nil)
+        define_field(name, size, "V") { |v| FloatEncoding.decode_float(v) }
       end
 
-      def matrix33_t(name)
-        index = allot(9)
-        format_string << "V9"
-        define_method(name) { nil }
+      def int32_t(name, size=nil)
+        define_field(name, size, "l<")
       end
 
-      def vector31_t(name)
-        index = allot(3)
-        format_string << "V3"
-        define_method(name) { nil }
+      def matrix33_t(name, size=nil)
+        define_field(name, size, "V", 9) { |v| nil }
+      end
+
+      def vector31_t(name, size=nil)
+        define_field(name, size, "V", 3) { |v| nil }
       end
     end
   end

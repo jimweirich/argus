@@ -7,7 +7,8 @@ module Argus
   class NavOptionChecksum < NavOption
     include CFields
 
-    uint32_t :checksum
+    uint32_t :chks
+    alias :checksum :chks
 
     def self.tag
       NavTag::CHECKSUM

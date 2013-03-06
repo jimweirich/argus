@@ -13,6 +13,7 @@ module Argus
     describe "data fields" do
       Then { csum.tag == NavOptionChecksum.tag }
       Then { csum.size == raw_data.size }
+      Then { csum.chks == 0x12345678 }
       Then { csum.checksum == 0x12345678 }
     end
   end
