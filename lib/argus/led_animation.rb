@@ -25,7 +25,24 @@ module Argus
       :blink_standard,
     ]
 
-    INDEX = {}
-    NAMES.each.with_index { |name, index| INDEX[name] = index }
+    VALUES = {}
+    NAMES.each.with_index { |name, index| VALUES[name] = index }
+
+    def self.lookup_name(numeric_value)
+      NAMES[numeric_value]
+    end
+
+    def self.lookup_value(symbolic_name)
+      case symbolic_name
+      when Symbol
+        VALUES[symbolic_name]
+      when Integer
+        symbolic_name
+      when /^\d+/
+        symbolic_name.to_i
+      when String
+        VALUES[symbolic_name.intern]
+      end
+    end
   end
 end

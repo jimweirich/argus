@@ -86,6 +86,24 @@ module Argus
       update_pcmd
     end
 
+    def led(selection, hertz, duration)
+      selection = LedAnimation.lookup_value(selection)
+      value = [
+        selection,
+        FloatEncoding.encode_float(hertz),
+        duration
+      ].join(',')
+      @at_commander.config("leds:leds_anim",value)
+      self
+    end
+
+    def enable_detection(colors, type=10, select=32)
+      config("detect:enemy_colors",colors.to_s)
+      config("detect:detect_type", type.to_s)
+      config("detect:detections_select_h", select.to_s)
+      self
+    end
+
     def config(key, value)
       @at_commander.config(key, value)
     end
