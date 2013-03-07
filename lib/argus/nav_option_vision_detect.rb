@@ -16,6 +16,7 @@ module Argus
     uint32_t   :width, NB_NAVDATA_DETECTION_RESULTS
     uint32_t   :height, NB_NAVDATA_DETECTION_RESULTS
     uint32_t   :dist, NB_NAVDATA_DETECTION_RESULTS
+    alias :distance :dist
     float32_t  :orientation_angle, NB_NAVDATA_DETECTION_RESULTS
     matrix33_t :rotation, NB_NAVDATA_DETECTION_RESULTS
     vector31_t :translation, NB_NAVDATA_DETECTION_RESULTS
@@ -41,6 +42,18 @@ module Argus
 
       def y
         @vision_detected.yc[@index]
+      end
+
+      def width
+        @vision_detected.width[@index]
+      end
+
+      def height
+        @vision_detected.height[@index]
+      end
+
+      def distance
+        @vision_detected.distance[@index]
       end
 
       def orientation_angle

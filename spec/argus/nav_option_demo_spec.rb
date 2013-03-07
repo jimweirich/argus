@@ -25,6 +25,7 @@ module Argus
     Then { demo.ctrl_state == 3 }
     Then { demo.control_state_name == :flying }
     Then { demo.vbat_flying_percentage == 0xcacacaca }
+    Then { demo.battery_level == 0xcacacaca }
     Then { demo.theta == 5.0 }
     Then { demo.phi == 6.0 }
     Then { demo.psi == 7.0 }

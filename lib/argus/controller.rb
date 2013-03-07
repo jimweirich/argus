@@ -86,6 +86,14 @@ module Argus
       update_pcmd
     end
 
+    def config(key, value)
+      @at_commander.config(key, value)
+    end
+
+    def demo_mode
+      @at_commander.config("general:navdata_demo", "TRUE")
+    end
+
     def front_camera
       @at_commander.config("video:video_channel", "2")
     end

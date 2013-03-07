@@ -9,9 +9,11 @@ module Argus
     include CFields
 
     uint32_t :ctrl_state               # Flying state (landed, flying,
+    alias :control_state :ctrl_state
                                        # hovering, etc.) defined in
                                        # CTRL_STATES enum.
     uint32_t :vbat_flying_percentage   # battery voltage filtered (mV)
+    alias :battery_level :vbat_flying_percentage
 
     float32_t :theta                   # UAV's pitch in milli-degrees
     float32_t :phi                     # UAV's roll  in milli-degrees
@@ -53,6 +55,18 @@ module Argus
 
     def control_state_name
       CONTROL_STATE_NAMES[ctrl_state]
+    end
+
+    def pitch
+      theta / 1000.0
+    end
+
+    def roll
+      phi / 1000.0
+    end
+
+    def yaw
+      psi / 1000.0
     end
 
     def self.tag

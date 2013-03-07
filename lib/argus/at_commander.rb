@@ -53,7 +53,9 @@ module Argus
     end
 
     def config(key, value)
-      @buffer << "AT*CONFIG=605,\"#{key}\",\"#{value}\"\r"
+      @mutex.synchronize do
+        command("CONFIG", "\"#{key}\",\"#{value}\"")
+      end
     end
 
     private

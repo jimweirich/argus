@@ -39,6 +39,7 @@ module Argus
       Then { detect.width == [30, 31, 32, 33] }
       Then { detect.height == [40, 41, 42, 43] }
       Then { detect.dist == [50, 51, 52, 53] }
+      Then { detect.distance == [50, 51, 52, 53] }
       Then { detect.orientation_angle == [60.0, 61.0, 62.0, 63.0] }
       Then { detect.rotation == [nil, nil, nil, nil] }
       Then { detect.translation == [nil, nil, nil, nil] }
@@ -53,6 +54,8 @@ module Argus
       Then { d0.type_name == :vertical }
       Then { d0.x == 10 }
       Then { d0.y == 20 }
+      Then { d0.width == 30 }
+      Then { d0.height == 40 }
       Then { d0.orientation_angle == 60.0 }
       Then { d0.camera_source == 70 }
     end
