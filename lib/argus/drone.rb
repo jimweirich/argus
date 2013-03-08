@@ -29,8 +29,8 @@ module Argus
       @nav.join
     end
 
-    def nav_callback(&block)
-      @nav.callback(&block)
+    def nav_callback(*args, &block)
+      @nav.callback(*args, &block)
     end
 
     %w(

@@ -4,7 +4,7 @@ module Argus
     def initialize(controller)
       @controller = controller
       @nav = NavStreamer.new
-      @nav_callback = nil
+      @callbacks = []
       @mutex = Mutex.new
       @nav_data = nil
       @nav_options = {}
@@ -29,8 +29,11 @@ module Argus
       @nav_thread.join
     end
 
-    def callback(&block)
-      @callback = block
+    def callback(callback=nil, &block)
+      @mutex.synchronize do
+        @callbacks << callback unless callback.nil?
+        @callbacks << block if block_given?
+      end
     end
 
     def data
@@ -44,24 +47,27 @@ module Argus
     private
 
     def update_nav_data(data)
-      update_internal_nav_data(data)
-      do_callbacks(data)
+      @mutex.synchronize do
+        update_internal_nav_data(data)
+        do_callbacks(data)
+      end
     end
 
     def update_internal_nav_data(data)
-      @mutex.synchronize do
-        @nav_data = data
-        if @nav_data.bootstrap?
-          @controller.demo_mode
-        end
-        data.options.each do |opt|
-          @nav_options[opt.tag] = opt if opt.tag < 100
-        end
+      @nav_data = data
+      if @nav_data.bootstrap?
+        @controller.demo_mode
+      end
+      data.options.each do |opt|
+        @nav_options[opt.tag] = opt if opt.tag < 100
       end
     end
 
     def do_callbacks(data)
-      @callback.call(data) if data && @callback
+      puts "DBG: CALLING BACK"
+      @callbacks.each do |callback|
+        callback.call(data)
+      end
     end
   end
 
