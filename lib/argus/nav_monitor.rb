@@ -51,6 +51,10 @@ module Argus
         update_internal_nav_data(data)
         do_callbacks(data)
       end
+    rescue Exception => ex
+      puts "ERROR in callback: #{ex}"
+      puts ex.message
+      $stdout.flush
     end
 
     def update_internal_nav_data(data)
@@ -64,7 +68,6 @@ module Argus
     end
 
     def do_callbacks(data)
-      puts "DBG: CALLING BACK"
       @callbacks.each do |callback|
         callback.call(data)
       end

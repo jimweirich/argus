@@ -8,15 +8,15 @@ end
 
 class NavInfoDisplay
   def call(data)
-    puts "Seq: #{navdata.sequence_number}"
-    puts "  Vision flag: #{navdata.vision_flag}"
-    puts "  Flying? #{navdata.flying?}"
-    puts "  Com Lost? #{navdata.communication_lost?.inspect}"
-    puts "  Watchdog Problem? #{navdata.com_watchdog_problem?.inspect}"
-    puts "  Bootstrap: #{navdata.bootstrap?}"
+    puts "Seq: #{data.sequence_number}"
+    puts "  Vision flag: #{data.vision_flag}"
+    puts "  Flying? #{data.flying?}"
+    puts "  Com Lost? #{data.communication_lost?.inspect}"
+    puts "  Watchdog Problem? #{data.com_watchdog_problem?.inspect}"
+    puts "  Bootstrap: #{data.bootstrap?}"
 
     puts "options...."
-    navdata.options.each do |opt|
+    data.options.each do |opt|
       display_option(opt)
     end
     puts
@@ -50,26 +50,72 @@ end
 class Tracker
   def initialize(drone)
     @drone = drone
+    @led = nil
+    @led_update = Time.now
+    @done = false
+  end
+
+  def done
+    @done = true
   end
 
   def call(data)
-    navdata.options.each do |opt|
+    return if @done
+    data.options.each do |opt|
       if opt.is_a?(Argus::NavOptionVisionDetect)
         if opt.detected_count == 0
           drone.hover
           puts "HOVERING"
+          target_lost
         elsif opt.detected_count > 0
           d = opt.detections.first
+          moving = false
           if d.x < 400
             drone.turn_left(0.2)
+            moving = true
             puts "TURNING LEFT"
           elsif d.x > 600
             drone.turn_right(0.2)
+            moving = true
             puts "TURNING RIGHT"
           else
+            drone.turn_right(0.0)
+          end
+
+          if d.y < 400
+            drone.up(0.2)
+            moving = true
+            puts "UP"
+          elsif d.y > 600
+            drone.down(0.2)
+            moving = true
+            puts "DOWN"
+          else
+            drone.up(0.0)
+          end
+
+          if moving
+            drone.forward(0.0)
+          else
+            if d.distance > 180
+              drone.forward(0.1)
+              moving = true
+              puts "FORWARD"
+            elsif d.distance < 150
+              drone.backward(0.1)
+              moving = true
+              puts "BACKWARD"
+            else
+              drone.forward(0.0)
+            end
+          end
+
+          if ! moving
             puts "HOVERING"
             drone.hover
           end
+
+          target_aquired
         end
       end
     end
@@ -78,6 +124,26 @@ class Tracker
   private
 
   attr_reader :drone
+
+  def target_aquired
+    if @led != :aquired || led_time_out
+      @led = :aquired
+      @led_update = Time.now
+      drone.controller.led(:green, 2.0, 3)
+    end
+  end
+
+  def target_lost
+    if @led != :lost || led_time_out
+      @led = :lost
+      @led_update = Time.now
+      drone.controller.led(:red, 2.0, 3)
+    end
+  end
+
+  def led_time_out
+    (Time.now - @led_update) > 2.0
+  end
 end
 
 drone = Argus::Drone.new
@@ -94,19 +160,19 @@ else
   cdrone = FauxDrone.new
 end
 
-puts "DBG: CALLBACK"
 drone.nav_callback(NavInfoDisplay.new)
-drone.nav_callback(Tracker.new(cdrone))
 
+tracker = Tracker.new(cdrone)
+drone.nav_callback(tracker)
 
 cdrone.take_off
-puts "DBG: GETS"
+
 while line = gets
   line.strip!
   break if line == ""
   drone.controller.led(line, 2.0, 4)
 end
 
+tracker.done
 cdrone.hover.land
-
 drone.stop
