@@ -12,7 +12,7 @@ else
     '--title', 'Argus -- Parrot AR Drone Ruby API'
   ]
   SPEC = Gem::Specification.new do |s|
-    s.name = 'hybridgroup-argus'
+    s.name = 'argus'
     s.version = Argus::VERSION
     s.summary = "Ruby API for a Parrot AD Drone Quadcopter"
     s.description = <<-EOF.delete "\n"
@@ -38,7 +38,7 @@ Argus is extremely experimental at this point.  Use at your own risk.
 
     s.authors = ["Jim Weirich", "Ron Evans", "Adrian Zankich"]
     s.email = ["jim.weirich@gmail.com", "ron dot evans at gmail dot com"]
-    s.homepage = "http://github.com/hybridgroup/argus"
+    s.homepage = "http://github.com/jimweirich/argus"
     s.rubyforge_project = "n/a"
   end
 

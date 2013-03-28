@@ -52,7 +52,7 @@ files:
 - spec/argus/controller_spec.rb
 - spec/argus/udp_sender_spec.rb
 - MIT-LICENSE
-homepage: http://github.com/hybridgroup/argus
+homepage: http://github.com/jimweirich/argus
 licenses: []
 post_install_message: 
 rdoc_options:
