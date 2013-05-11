@@ -6,8 +6,48 @@ class FauxDrone
   end
 end
 
+class MovingAverage
+  def initialize(size=20)
+    @size = size
+    @points = []
+  end
+
+  def <<(new_value)
+    @points << new_value
+    @points.shift if @points.size > @size
+  end
+
+  def value
+    if @points.empty?
+      0
+    else
+      sum = @points.inject(0.0) { |s, v| s+v }
+      sum / @points.size
+    end
+  end
+end
+
+require 'base64'
+
+class NavLogger
+  def initialize(file_name)
+    @file_name = file_name
+    @file = open(file_name, "w")
+  end
+
+  def call(data)
+    @file.write(Base64.encode64(data.raw))
+  end
+
+  def close
+    @file.close
+  end
+end
+
 class NavInfoDisplay
   def call(data)
+    print "\033[0;0f"
+    print "\033[2J"
     puts "Seq: #{data.sequence_number}"
     puts "  Vision flag: #{data.vision_flag}"
     puts "  Flying? #{data.flying?}"
