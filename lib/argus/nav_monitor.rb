@@ -54,6 +54,7 @@ module Argus
     rescue Exception => ex
       puts "ERROR in callback: #{ex}"
       puts ex.message
+      puts ex.backtrace
       $stdout.flush
     end
 

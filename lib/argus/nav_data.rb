@@ -7,6 +7,10 @@ module Argus
       parse_nav_data(@data)
     end
 
+    def raw
+      @data
+    end
+
     def self.bit_mask_readers(*names)
       names.each.with_index do |name, bit_number|
         if name.is_a?(Array)
