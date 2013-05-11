@@ -2,6 +2,8 @@ require 'thread'
 
 module Argus
   class ATCommander
+    attr_reader :timestamps
+
     def initialize(sender)
       @sender = sender
       @seq = 0
@@ -11,12 +13,14 @@ module Argus
       @thread = nil
       @interval = 0.020
       @mutex = Mutex.new
+      @timestamps = []
     end
 
     def start
       @running = true
       @thread = Thread.new do
         while @running
+          log_time
           tick
           sleep @interval
         end
@@ -65,6 +69,11 @@ module Argus
     end
 
     private
+
+    def log_time
+      @timestamps.shift if @timestamps.size >= 1000
+      @timestamps <<  Time.now.to_f
+    end
 
     def packet
       yield self

@@ -14,6 +14,10 @@ module Argus
       @nav = NavMonitor.new(@controller)
     end
 
+    def commander
+      @at
+    end
+
     def start
       @nav.start
       @at.start
