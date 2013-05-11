@@ -58,6 +58,12 @@ module Argus
       end
     end
 
+    def reset_watchdog
+      @mutex.synchronize do
+        command("COMWDG")
+      end
+    end
+
     private
 
     def packet
@@ -70,9 +76,13 @@ module Argus
       @buffer = ""
     end
 
-    def command(name, args)
+    def command(name, args=nil)
       @seq += 1
-      @buffer << "AT*#{name}=#{@seq},#{args}\r"
+      if args
+        @buffer << "AT*#{name}=#{@seq},#{args}\r"
+      else
+        @buffer << "AT*#{name}=#{@seq}\r"
+      end
     end
   end
 end

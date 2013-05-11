@@ -120,6 +120,10 @@ module Argus
       @at_commander.config("video:video_channel", "1")
     end
 
+    def reset_watchdog
+      @at_commander.reset_watchdog
+    end
+
     private
 
     REF_BASE = [18, 20, 22, 24, 28].
