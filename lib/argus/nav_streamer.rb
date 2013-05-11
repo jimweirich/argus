@@ -3,6 +3,7 @@ require 'socket'
 module Argus
   class NavStreamer
     def initialize(socket=nil, host='192.168.1.1', port='5554')
+      # TODO: Why is the port a string?
       @socket = socket || UDPSocket.new
       @host = host
       @port = port

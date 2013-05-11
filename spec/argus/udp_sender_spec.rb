@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'socket'
 
 describe Argus::UdpSender do
-  Given(:port) { 5500 }
+  Given(:port) { '5500' }
   Given(:socket) { UDPSocket.new }
   Given(:sender) { Argus::UdpSender.new(socket, 'localhost', port) }
   Given!(:server) {
