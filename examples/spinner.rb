@@ -93,6 +93,9 @@ class Tracker
     @led = nil
     @led_update = Time.now
     @done = false
+    @dist_ave = MovingAverage.new(50)
+    @x_ave = MovingAverage.new(20)
+    @y_ave = MovingAverage.new(20)
   end
 
   def done
@@ -105,53 +108,28 @@ class Tracker
       if opt.is_a?(Argus::NavOptionVisionDetect)
         if opt.detected_count == 0
           drone.hover
-          puts "HOVERING"
+          puts "HOVERING (LOST)"
           target_lost
+
         elsif opt.detected_count > 0
           d = opt.detections.first
-          moving = false
-          if d.x < 400
-            drone.turn_left(0.2)
-            moving = true
-            puts "TURNING LEFT"
-          elsif d.x > 600
-            drone.turn_right(0.2)
-            moving = true
-            puts "TURNING RIGHT"
-          else
-            drone.turn_right(0.0)
+          @x_ave << d.x
+          @y_ave << d.y
+          @dist_ave << d.distance
+          turn_movement = 0.0
+
+          if @x_ave.value < 400
+            turn_movement = -0.2
+          elsif @x_ave.value > 600
+            turn_movement = 0.2
           end
 
-          if d.y < 400
-            drone.up(0.2)
-            moving = true
-            puts "UP"
-          elsif d.y > 600
-            drone.down(0.2)
-            moving = true
-            puts "DOWN"
-          else
-            drone.up(0.0)
-          end
-
-          if moving
+          if turn_movement != 0.0
+            puts "RIGHT: #{turn_movement}"
+            drone.turn_right(turn_movement)
             drone.forward(0.0)
           else
-            if d.distance > 180
-              drone.forward(0.1)
-              moving = true
-              puts "FORWARD"
-            elsif d.distance < 150
-              drone.backward(0.1)
-              moving = true
-              puts "BACKWARD"
-            else
-              drone.forward(0.0)
-            end
-          end
-
-          if ! moving
-            puts "HOVERING"
+            puts "HOVERING (TRACKING)"
             drone.hover
           end
 
@@ -189,6 +167,7 @@ end
 drone = Argus::Drone.new
 drone.start
 
+drone.reset_watchdog
 drone.controller.enable_detection(2)
 
 flying = ARGV.shift
@@ -205,6 +184,9 @@ drone.nav_callback(NavInfoDisplay.new)
 tracker = Tracker.new(cdrone)
 drone.nav_callback(tracker)
 
+logger = NavLogger.new("navdata.raw64")
+drone.nav_callback(logger)
+
 cdrone.take_off
 
 while line = gets
@@ -214,5 +196,8 @@ while line = gets
 end
 
 tracker.done
-cdrone.hover.land
+cdrone.hover
+10.times do cdrone.land end
 drone.stop
+
+logger.close
