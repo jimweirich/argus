@@ -44,11 +44,11 @@ module Argus
     end
 
     def define_data(name, value)
-      instance_variable_set(name, value)
-      ivar = "@#{name}".to_sym
-      define_method(name) {
+      ivar = "@#{name}".to_sym    
+      instance_variable_set(ivar, value)
+      self.class.send(:define_method, name) do
         instance_variable_get(ivar)
-      }
+      end
     end
   end
 end

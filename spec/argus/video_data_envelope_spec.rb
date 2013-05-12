@@ -2,11 +2,23 @@ require 'spec_helper'
 
 module Argus
   describe VideoDataEnvelope do
-    Given(:raw_header) { Bytes.make_header(state_bits, seq_num, vision_flag) }
-    Given(:raw_video_bytes) { Bytes.make_video_data(raw_header) }
+    Given(:unpacker) { flexmock("Unpacker", :unpack => values) }
+    Given(:streamer) { flexmock("Streamer", :read => unpacker) }
+    Given(:video_data_envelope) { VideoDataEnvelope.new(streamer) }
 
-    When(:video_data_envelope) { VideoDataEnvelope.new() }
+    describe "version" do
+      When(:values) { flexmock("Values", :first => 3) }
+      Then { video_data_envelope.version == 3 }
+    end
 
-    pending "some tests"
+    describe "frame_number" do
+      When(:values) { flexmock("Values", :first => 42) }
+      Then { video_data_envelope.frame_number == 42 }
+    end
+
+    describe "payload_size" do
+      When(:values) { flexmock("Values", :first => 2048) }
+      Then { video_data_envelope.payload_size == 2048 }
+    end
   end
 end
