@@ -1,11 +1,11 @@
 module Argus
   class VideoData
-    attr_reader :tcp_video_streamer, :envelope, :frame
+    attr_reader :streamer, :envelope, :frame
 
-    def initialize(tcp_video_streamer)
-      @tcp_video_streamer = tcp_video_streamer
+    def initialize(streamer)
+      @streamer = streamer
       @envelope = parse_envelope
-      tcp_video_streamer.receive_data(4) # TODO: look at why just throwing this data away
+      @streamer.receive_data(4) # TODO: look at why just throwing this data away
       @frame = parse_frame
     end
 
@@ -40,11 +40,11 @@ module Argus
     end
 
     def parse_frame
-      tcp_video_streamer.receive_data(envelope[:payload_size]) if envelope[:payload_size]
+      streamer.receive_data(envelope[:payload_size]) if envelope[:payload_size]
     end
 
     def get_data(size, format)
-      (tcp_video_streamer.read(size)).unpack(format).first
+      streamer.read(size).unpack(format).first
     end
   end
 end
