@@ -43,6 +43,6 @@ module Bytes
   def make_video_data(*options)
     result = options.flatten
     result << Bytes.make_demo_data
-    result #.pack("C*")
+    result
   end
 end
