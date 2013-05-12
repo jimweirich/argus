@@ -5,6 +5,7 @@ module Argus
     def initialize(streamer)
       @streamer = streamer
       parse
+      @streamer.read(4) # TODO: look at why just throwing this data away
     end
 
     def parse

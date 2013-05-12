@@ -13,6 +13,7 @@ module Argus
     end
 
     pending "when receiving good data"
+    
     pending "when receiving bad data"
   end
 end

@@ -1,16 +1,15 @@
 module Argus
   class VideoData
-    attr_reader :streamer, :envelope, :frame
+    attr_reader :socket, :envelope, :frame
 
-    def initialize(streamer)
-      @streamer = streamer
-      @envelope = VideoDataEnvelope.new(@streamer)
-      @streamer.receive_data(4) # TODO: look at why just throwing this data away
+    def initialize(socket)
+      @socket = socket
+      @envelope = VideoDataEnvelope.new(@socket)
       @frame = parse_frame
     end
 
     def parse_frame
-      streamer.receive_data(envelope.payload_size) if envelope
+      socket.read(envelope.payload_size) if envelope
     end
   end
 end
