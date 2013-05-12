@@ -4,22 +4,29 @@ require 'argus/nav_monitor'
 module Argus
 
   class Drone
-    attr_reader :controller
+    attr_reader :controller, :enable_nav_monitor
 
     def initialize(socket=nil, host='192.168.1.1', port='5556')
       @socket = socket || UDPSocket.new
       @sender = Argus::UdpSender.new(@socket, host, port)
       @at = Argus::ATCommander.new(@sender)
       @controller = Argus::Controller.new(@at)
-      @nav = NavMonitor.new(@controller)
+      
+      @enable_nav_monitor = false
     end
 
     def commander
       @at
     end
 
-    def start
-      @nav.start
+    def start(enable_nav_monitor=true)
+      @enable_nav_monitor = enable_nav_monitor
+      
+      if enable_nav_monitor
+        @nav = NavMonitor.new(@controller)
+        @nav.start
+      end
+
       @at.start
     end
 
@@ -27,10 +34,10 @@ module Argus
       @controller.land
 
       @at.stop
-      @nav.stop
+      @nav.stop if enable_nav_monitor
 
       @at.join
-      @nav.join
+      @nav.join if enable_nav_monitor
     end
 
     def nav_callback(*args, &block)
