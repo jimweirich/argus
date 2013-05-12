@@ -12,8 +12,5 @@ module Argus
       Then { udp_socket.should have_received(:close) }
     end
 
-    pending "when receiving good data"
-    
-    pending "when receiving bad data"
   end
 end

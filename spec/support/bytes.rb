@@ -31,9 +31,18 @@ module Bytes
     bytes
   end
 
+  def make_video_envelope
+    val = "PaVE".bytes +
+      Bytes.int16(0x01) +
+      Bytes.int16(0x02) +
+      Bytes.int32(0x68) +
+      [0] * 60
+    val.pack("C*")
+  end
+
   def make_video_data(*options)
     result = options.flatten
-    add_checksum(result)
-    result.pack("C*")
+    result << Bytes.make_demo_data
+    result #.pack("C*")
   end
 end

@@ -3,8 +3,8 @@ require 'spec_helper'
 module Argus
   describe VideoDataEnvelope do
     Given(:unpacker) { flexmock("Unpacker", :unpack => values) }
-    Given(:streamer) { flexmock("Streamer", :read => unpacker) }
-    Given(:video_data_envelope) { VideoDataEnvelope.new(streamer) }
+    Given(:socket) { flexmock("socket", :read => unpacker) }
+    Given(:video_data_envelope) { VideoDataEnvelope.new(socket) }
 
     describe "version" do
       When(:values) { flexmock("Values", :first => 3) }
@@ -20,5 +20,7 @@ module Argus
       When(:values) { flexmock("Values", :first => 2048) }
       Then { video_data_envelope.payload_size == 2048 }
     end
+
+    pending "TODO: handle invalid envelope"
   end
 end
