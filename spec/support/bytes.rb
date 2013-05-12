@@ -30,4 +30,10 @@ module Bytes
     [0xff, 0xff, 0x08, 0x00, 0x61, 0x04, 0x00, 0x00].each do |b| bytes << b end
     bytes
   end
+
+  def make_video_data(*options)
+    result = options.flatten
+    add_checksum(result)
+    result.pack("C*")
+  end
 end
