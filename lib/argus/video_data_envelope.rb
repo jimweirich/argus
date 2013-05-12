@@ -1,11 +1,10 @@
 module Argus
   class VideoDataEnvelope
-    attr_reader :streamer
+    attr_reader :socket
 
-    def initialize(streamer)
-      @streamer = streamer
+    def initialize(socket)
+      @socket = socket
       parse
-      @streamer.read(4) # TODO: look at why just throwing this data away
     end
 
     def parse
@@ -34,6 +33,7 @@ module Argus
       data(:reserved_2, 2, "H*")
       data(:advertised_size, 4, "V")
       data(:reserved_12, 12, "H*")
+      socket.read(4) # TODO: look at why just throwing this data away
     end
 
     def data(name, size, format)
@@ -41,7 +41,7 @@ module Argus
     end
 
     def get_data(size, format)
-      streamer.read(size).unpack(format).first
+      socket.read(size).unpack(format).first
     end
 
     def define_data(name, value)
