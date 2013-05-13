@@ -32,7 +32,7 @@ module Bytes
   end
 
   def make_video_envelope
-    val = "PaVE".bytes +
+    val = "PaVE".bytes.to_a +
       Bytes.int16(0x01) +
       Bytes.int16(0x02) +
       Bytes.int32(0x68) +
