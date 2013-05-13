@@ -30,4 +30,19 @@ module Bytes
     [0xff, 0xff, 0x08, 0x00, 0x61, 0x04, 0x00, 0x00].each do |b| bytes << b end
     bytes
   end
+
+  def make_video_envelope
+    val = "PaVE".bytes.to_a +
+      Bytes.int16(0x01) +
+      Bytes.int16(0x02) +
+      Bytes.int32(0x68) +
+      [0] * 60
+    val.pack("C*")
+  end
+
+  def make_video_data(*options)
+    result = options.flatten
+    result << Bytes.make_demo_data
+    result
+  end
 end
