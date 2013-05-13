@@ -4,7 +4,7 @@ require 'socket'
 socket = TCPSocket.open('192.168.1.1', 5555)
 streamer = Argus::VideoStreamer.new(socket)
 
-h246_out = File.new("/tmp/#{Time.now.to_i}.h246", "w+b")
+h246_out = File.new("#{Time.now.to_i}.h246", "w+b")
 
 streamer.start
 
