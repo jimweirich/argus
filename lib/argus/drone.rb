@@ -4,7 +4,7 @@ require 'argus/nav_monitor'
 module Argus
 
   class Drone
-    attr_reader :controller
+    attr_reader :controller, :nav
 
     def initialize(socket=nil, host='192.168.1.1', port='5556')
       @socket = socket || UDPSocket.new
