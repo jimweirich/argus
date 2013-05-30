@@ -1,6 +1,6 @@
 require 'argus'
 
-drone = Argus::Drone.new
+drone = Argus::Drone.new(remote_host: '192.168.1.200')
 drone.start
 
 puts "Hovering ..."
