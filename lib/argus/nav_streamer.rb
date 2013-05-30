@@ -22,7 +22,7 @@ module Argus
     def initialize(opts={})
       @state = :init
       @socket = nil
-      @remote_host  = opts[:remote_host] || '192.168.1.1'
+      @remote_host  = opts.fetch(:remote_host)
       @local_host   = opts[:local_host]  || '0.0.0.0'
       @port         = opts[:port]        || 5554
       @socket_class = opts[:UDPSocket]   || UDPSocket
@@ -74,7 +74,7 @@ module Argus
     def reconnect
       disconnect if @socket
       @socket = new_socket
-      @socket.bind(@local_host, @port)
+      @socket.bind(@local_host, @port) rescue nil
       request_nav_data
     end
 

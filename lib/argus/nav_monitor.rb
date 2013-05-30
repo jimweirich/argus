@@ -3,9 +3,9 @@ module Argus
   class NavMonitor
     attr_reader :streamer
 
-    def initialize(controller)
+    def initialize(controller, remote_host)
       @controller = controller
-      @streamer = NavStreamer.new
+      @streamer = NavStreamer.new(remote_host: remote_host)
       @callbacks = []
       @mutex = Mutex.new
       @nav_data = nil

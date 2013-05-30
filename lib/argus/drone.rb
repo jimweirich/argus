@@ -6,12 +6,13 @@ module Argus
   class Drone
     attr_reader :controller, :nav
 
-    def initialize(socket=nil, host='192.168.1.1', port='5556')
-      @socket = socket || UDPSocket.new
-      @sender = Argus::UdpSender.new(@socket, host, port)
+    def initialize(opts={})
+      host = opts[:remote_host] || '192.168.1.1'
+      port = opts[:post] || '5556'
+      @sender = Argus::UdpSender.new(remote_host: host, port: port)
       @at = Argus::ATCommander.new(@sender)
       @controller = Argus::Controller.new(@at)
-      @nav = NavMonitor.new(@controller)
+      @nav = NavMonitor.new(@controller, host)
     end
 
     def commander
