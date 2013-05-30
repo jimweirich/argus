@@ -156,18 +156,22 @@ class Tracker
           turn_movement = 0.0
           vertical_movement = 0.0
 
+          turnword = "RIGHT"
+          upword = "UP"
           if @x_ave.value < 400
             turn_movement = -0.5
+            turnword = "LEFT"
           elsif @x_ave.value > 600
             turn_movement = 0.5
           elsif @y_ave.value < 400
             vertical_movement = 0.5
           elsif @y_ave.value > 600
             vertical_movement = -0.5
+            upword = "DOWN"
           end
 
           if turn_movement != 0.0 || vertical_movement != 0.0
-            puts "RIGHT: #{turn_movement} UP #{vertical_movement}"
+            puts "#{turnword}: #{turn_movement.abs} #{upword}: #{vertical_movement.abs}"
             drone.turn_right(turn_movement)
             drone.up(vertical_movement)
             drone.forward(0.0)
