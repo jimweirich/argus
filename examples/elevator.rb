@@ -131,8 +131,8 @@ class Tracker
     @led_update = Time.now
     @done = false
     @dist_ave = MovingAverage.new(50)
-    @x_ave = MovingAverage.new(20)
-    @y_ave = MovingAverage.new(20)
+    @x_ave = MovingAverage.new(3)
+    @y_ave = MovingAverage.new(3)
   end
 
   def done
