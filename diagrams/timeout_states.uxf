@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.UseCase</type>
+    <coordinates>
+      <x>270</x>
+      <y>210</y>
+      <w>120</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>init
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.UseCase</type>
+    <coordinates>
+      <x>270</x>
+      <y>330</y>
+      <w>120</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>wait
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.UseCase</type>
+    <coordinates>
+      <x>580</x>
+      <y>330</y>
+      <w>120</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>run
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>250</y>
+      <w>172</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+start / reconnect</panel_attributes>
+    <additional_attributes>90;80;90;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>90</x>
+      <y>290</y>
+      <w>210</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+short_timeout
+/ request_nav_data</panel_attributes>
+    <additional_attributes>190;90;100;130;100;30;190;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>360</x>
+      <y>310</y>
+      <w>240</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+received_data</panel_attributes>
+    <additional_attributes>220;50;30;50</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>360</y>
+      <w>180</w>
+      <h>124</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+long_timeout
+/ reconnect</panel_attributes>
+    <additional_attributes>110;30;160;80;30;80;60;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>350</x>
+      <y>340</y>
+      <w>300</w>
+      <h>154</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+long_timeout
+/ reconnect</panel_attributes>
+    <additional_attributes>30;30;100;110;240;110;280;60</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>660</x>
+      <y>290</y>
+      <w>180</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+received_data</panel_attributes>
+    <additional_attributes>30;90;110;140;110;30;40;70</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>560</x>
+      <y>240</y>
+      <w>180</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+short_timeout
+</panel_attributes>
+    <additional_attributes>60;90;30;50;160;50;120;100</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Note</type>
+    <coordinates>
+      <x>280</x>
+      <y>500</y>
+      <w>400</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Legend
+
+reconnect            =&gt; Recreate the UDP Socket
+request_nav_data =&gt; send 0x00000001 to remote host</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
