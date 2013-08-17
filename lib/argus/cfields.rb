@@ -3,8 +3,6 @@ require 'argus/float_encoding'
 module Argus
 
   module CFields
-    include FloatEncoding
-
     def self.included(base)
       base.send :extend, ClassMethods
     end
