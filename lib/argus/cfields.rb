@@ -48,7 +48,7 @@ module Argus
       def define_array_field(name, size, format, width, transform)
         index = allot(width*size)
         format_string << "#{format}#{width*size}"
-        define_method(name) { @data[index, size] }
+        define_method(name) { @data[index, width*size] }
       end
 
       def uint32_t(name, size=nil)
