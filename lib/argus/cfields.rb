@@ -44,29 +44,13 @@ module Argus
       def define_scaler_field(name, format, width, transform)
         index = allot(width)
         format_string << (width==1 ? format : "#{format}#{width}")
-        if transform
-          ivar = "@#{name}".to_sym
-          define_method(name) {
-            instance_variable_get(ivar) ||
-              instance_variable_set(ivar, transform.call(@data[index]))
-          }
-        else
-          define_method(name) { @data[index] }
-        end
+        define_method(name) { @data[index] }
       end
 
       def define_array_field(name, size, format, width, transform)
         index = allot(width*size)
         format_string << "#{format}#{width*size}"
-        if transform
-          ivar = "@#{name}".to_sym
-          define_method(name) {
-            instance_variable_get(ivar) ||
-              instance_variable_set(ivar, @data[index, size].map(&transform))
-          }
-        else
-          define_method(name) { @data[index, size] }
-        end
+        define_method(name) { @data[index, size] }
       end
 
       def uint32_t(name, size=nil)
