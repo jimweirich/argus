@@ -52,7 +52,9 @@ class TimeQueue
   def to_s
     base_time = nil
     strings = @items[0,3].map { |item|
-      item.to_s(base_time).tap { base_time ||= item.time }
+      string = item.to_s(base_time)
+      base_time ||= item.time
+      string
     }
     strings << "..." if @items.size > 3
     "[#{strings.join(', ')}]"
