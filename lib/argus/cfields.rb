@@ -78,7 +78,7 @@ module Argus
       end
 
       def float32_t(name, size=nil)
-        define_field(name, size, "V") { |v| FloatEncoding.decode_float(v) }
+        define_field(name, size, "g")
       end
 
       def int32_t(name, size=nil)
