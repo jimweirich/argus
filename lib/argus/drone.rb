@@ -46,6 +46,7 @@ module Argus
        turn_left turn_right
        front_camera bottom_camera
        config
+       led
        reset_watchdog
     ).each do |meth|
       define_method(meth) { |*args|
