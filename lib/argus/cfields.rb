@@ -78,7 +78,7 @@ module Argus
       end
 
       def float32_t(name, size=nil)
-        define_field(name, size, "V") { |v| FloatEncoding.decode_float(v) }
+        define_field(name, size, "e")
       end
 
       def int32_t(name, size=nil)
@@ -86,11 +86,11 @@ module Argus
       end
 
       def matrix33_t(name, size=nil)
-        define_field(name, size, "V", 9) { |v| nil }
+        define_field(name, size, "V", 9)
       end
 
       def vector31_t(name, size=nil)
-        define_field(name, size, "V", 3) { |v| nil }
+        define_field(name, size, "V", 3)
       end
     end
   end

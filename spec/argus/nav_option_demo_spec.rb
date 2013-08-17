@@ -44,12 +44,12 @@ module Argus
     Then { demo.vx == about(0).delta(0.00000001) }
     Then { demo.vy == about(0).delta(0.00000001) }
     Then { demo.vz == about(0).delta(0.00000001) }
-    Then { demo.detection_camera_rot.nil? }
-    Then { demo.detection_camera_trans.nil? }
+    Then { demo.detection_camera_rot }
+    Then { demo.detection_camera_trans }
     Then { demo.detection_tag_index == 0 }
     Then { demo.detection_camera_type == 13 }
-    Then { demo.drone_camera_rot.nil? }
-    Then { demo.drone_camera_trans.nil? }
+    Then { demo.drone_camera_rot }
+    Then { demo.drone_camera_trans }
   end
 
 end
