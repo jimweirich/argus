@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'base64'
 
 module Argus
   describe NavOptionDemo do
@@ -6,37 +7,47 @@ module Argus
       FloatEncoding.encode_float(float)
     end
 
-    Given(:raw_data) { [
-        NavTag::DEMO, 148,
-        3, 0xcacacaca,
-        f(5.0), f(6.0), f(7.0),
-        -100000,
-        f(-5.0), f(-6.0), f(-7.0),
-        33,
-        [0]*9, [0]*3,
-        12, 34,
-        [0]*9, [0]*3,
-      ].flatten.pack("vv VV V3 l< V3 V V9 V3 VV V9 v3") }
+    # NOTE: This is a Base 64 encoded NavData packet recorded directly from the drone.
+    Given(:base64_data) {
+      "iHdmVdAEgA/5iwAAAAAAAAAAlAAAAAIAPAAAAADwREUAgCNFQFEiyAAAAABk" +
+      "AAAAZAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA0AAADWP3i/6kNxPniCg72IpXO+64R4" +
+      "v+kAAD2hLGG9u7U6PatYfz8AAAAAAAAAAAAAdcMQAEgBAAAAAAAAAAAAAAAA" +
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" +
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//8I" +
+      "ANQdAAA="
+    }
+    Given(:raw_data) { Base64.decode64(base64_data) }
+    Given(:nav_data) { NavData.new(raw_data) }
 
-    When(:demo) { NavOptionDemo.new(raw_data) }
+    When(:demo) { nav_data.options.first }
 
     Then { ! demo.nil? }
+    Then { demo.tag == 0 }
 
-    Then { demo.ctrl_state == 3 }
-    Then { demo.control_state_name == :flying }
-    Then { demo.vbat_flying_percentage == 0xcacacaca }
-    Then { demo.battery_level == 0xcacacaca }
-    Then { demo.theta == 5.0 }
-    Then { demo.phi == 6.0 }
-    Then { demo.psi == 7.0 }
-    Then { demo.altitude == -100000 }
-    Then { demo.vx == -5.0 }
-    Then { demo.vy == -6.0 }
-    Then { demo.vz == -7.0 }
+    Then { demo.ctrl_state == 0x20000 }
+    Then { demo.control_state_name == :default }
+    Then { demo.vbat_flying_percentage == 60 }
+    Then { demo.battery_level == 60 }
+    Then { demo.theta == 3151.0 }
+    Then { demo.phi == 2616.0 }
+    Then { demo.psi == -166213.0 }
+    Then { demo.pitch == 3.151 }
+    Then { demo.roll == 2.616 }
+    Then { demo.yaw == -166.213 }
+    Then { demo.altitude == 0 }
+    Then { demo.vx == about(0).delta(0.00000001) }
+    Then { demo.vy == about(0).delta(0.00000001) }
+    Then { demo.vz == about(0).delta(0.00000001) }
     Then { demo.detection_camera_rot.nil? }
     Then { demo.detection_camera_trans.nil? }
-    Then { demo.detection_tag_index == 12 }
-    Then { demo.detection_camera_type == 34 }
+    Then { demo.detection_tag_index == 0 }
+    Then { demo.detection_camera_type == 13 }
     Then { demo.drone_camera_rot.nil? }
     Then { demo.drone_camera_trans.nil? }
   end

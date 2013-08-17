@@ -54,7 +54,7 @@ module Argus
     ]
 
     def control_state_name
-      CONTROL_STATE_NAMES[ctrl_state]
+      CONTROL_STATE_NAMES[ctrl_state & 0x0f]
     end
 
     def pitch
