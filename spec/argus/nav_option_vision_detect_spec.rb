@@ -41,8 +41,8 @@ module Argus
       Then { detect.dist == [50, 51, 52, 53] }
       Then { detect.distance == [50, 51, 52, 53] }
       Then { detect.orientation_angle == [60.0, 61.0, 62.0, 63.0] }
-      Then { detect.rotation == [nil, nil, nil, nil] }
-      Then { detect.translation == [nil, nil, nil, nil] }
+      Then { detect.rotation.size == 9 * 4 }
+      Then { detect.translation.size == 3 * 4 }
       Then { detect.camera_source == [70, 71, 72, 73] }
     end
 

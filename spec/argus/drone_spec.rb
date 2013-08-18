@@ -4,7 +4,7 @@ module Argus
   describe Drone do
 
     Given(:socket) { flexmock("Socket", send: nil).should_ignore_missing }
-    Given(:drone) { Drone.new(socket) }
+    Given(:drone) { Drone.new(socket: socket) }
 
     describe "default navigation monitor enabled" do
       Then { drone.enable_nav_monitor == false }

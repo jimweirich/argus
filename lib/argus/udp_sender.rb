@@ -1,9 +1,9 @@
 module Argus
   class UdpSender
-    def initialize(udp_socket, host=nil, port=nil)
-      @udp_socket = udp_socket
-      @host = host || '192.168.1.1'
-      @port = port || 5556
+    def initialize(opts={})
+      @udp_socket = opts.fetch(:socket)
+      @host = opts.fetch(:remote_host)
+      @port = opts.fetch(:port, 5556)
     end
 
     def send_packet(data)

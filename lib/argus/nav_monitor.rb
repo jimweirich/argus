@@ -1,9 +1,11 @@
 module Argus
 
   class NavMonitor
-    def initialize(controller)
+    attr_reader :streamer
+
+    def initialize(controller, remote_host)
       @controller = controller
-      @nav = NavStreamer.new
+      @streamer = NavStreamer.new(remote_host: remote_host)
       @callbacks = []
       @mutex = Mutex.new
       @nav_data = nil
@@ -11,11 +13,11 @@ module Argus
     end
 
     def start
-      @nav.start
+      @streamer.start
       @running = true
       @nav_thread = Thread.new do
         while @running
-          data = @nav.receive_data
+          data = @streamer.receive_data
           update_nav_data(data) if data
         end
       end

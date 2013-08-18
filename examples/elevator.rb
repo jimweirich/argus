@@ -64,10 +64,15 @@ class NavInfoDisplay
   end
 
   def call(data)
+    if @drone && @drone.nav && @drone.nav.streamer
+      state = @drone.nav.streamer.state.to_s
+    else
+      state = :unknown
+    end
     update_timing
     print "\033[0;0f"
     print "\033[2J"
-    printf "Ave: %0.4f, Max: %0.4f\n", @ave, @max
+    printf "Ave: %0.4f, Max: %0.4f (%s)\n", @ave, @max, state
     puts "Seq: #{data.sequence_number}"
     puts "  Vision flag: #{data.vision_flag}"
     puts "  Flying? #{data.flying?}"
@@ -126,8 +131,8 @@ class Tracker
     @led_update = Time.now
     @done = false
     @dist_ave = MovingAverage.new(50)
-    @x_ave = MovingAverage.new(20)
-    @y_ave = MovingAverage.new(20)
+    @x_ave = MovingAverage.new(3)
+    @y_ave = MovingAverage.new(3)
   end
 
   def done
@@ -151,18 +156,22 @@ class Tracker
           turn_movement = 0.0
           vertical_movement = 0.0
 
+          turnword = "RIGHT"
+          upword = "UP"
           if @x_ave.value < 400
-            turn_movement = -0.2
+            turn_movement = -0.5
+            turnword = "LEFT"
           elsif @x_ave.value > 600
-            turn_movement = 0.2
+            turn_movement = 0.5
           elsif @y_ave.value < 400
-            vertical_movement = 0.2
+            vertical_movement = 0.5
           elsif @y_ave.value > 600
-            vertical_movement = -0.2
+            vertical_movement = -0.5
+            upword = "DOWN"
           end
 
           if turn_movement != 0.0 || vertical_movement != 0.0
-            puts "RIGHT: #{turn_movement} UP #{vertical_movement}"
+            puts "#{turnword}: #{turn_movement.abs} #{upword}: #{vertical_movement.abs}"
             drone.turn_right(turn_movement)
             drone.up(vertical_movement)
             drone.forward(0.0)

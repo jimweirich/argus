@@ -3,8 +3,6 @@ require 'argus/float_encoding'
 module Argus
 
   module CFields
-    include FloatEncoding
-
     def self.included(base)
       base.send :extend, ClassMethods
     end
@@ -44,29 +42,13 @@ module Argus
       def define_scaler_field(name, format, width, transform)
         index = allot(width)
         format_string << (width==1 ? format : "#{format}#{width}")
-        if transform
-          ivar = "@#{name}".to_sym
-          define_method(name) {
-            instance_variable_get(ivar) ||
-              instance_variable_set(ivar, transform.call(@data[index]))
-          }
-        else
-          define_method(name) { @data[index] }
-        end
+        define_method(name) { @data[index] }
       end
 
       def define_array_field(name, size, format, width, transform)
         index = allot(width*size)
         format_string << "#{format}#{width*size}"
-        if transform
-          ivar = "@#{name}".to_sym
-          define_method(name) {
-            instance_variable_get(ivar) ||
-              instance_variable_set(ivar, @data[index, size].map(&transform))
-          }
-        else
-          define_method(name) { @data[index, size] }
-        end
+        define_method(name) { @data[index, width*size] }
       end
 
       def uint32_t(name, size=nil)
@@ -78,7 +60,7 @@ module Argus
       end
 
       def float32_t(name, size=nil)
-        define_field(name, size, "V") { |v| FloatEncoding.decode_float(v) }
+        define_field(name, size, "e")
       end
 
       def int32_t(name, size=nil)
@@ -86,11 +68,11 @@ module Argus
       end
 
       def matrix33_t(name, size=nil)
-        define_field(name, size, "V", 9) { |v| nil }
+        define_field(name, size, "V", 9)
       end
 
       def vector31_t(name, size=nil)
-        define_field(name, size, "V", 3) { |v| nil }
+        define_field(name, size, "V", 3)
       end
     end
   end

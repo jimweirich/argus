@@ -4,7 +4,7 @@ require 'socket'
 describe Argus::UdpSender do
   Given(:port) { '5500' }
   Given(:socket) { UDPSocket.new }
-  Given(:sender) { Argus::UdpSender.new(socket, 'localhost', port) }
+  Given(:sender) { Argus::UdpSender.new(socket: socket, remote_host: 'localhost', port: port) }
   Given!(:server) {
     server = UDPSocket.new
     server.bind(nil, port)
