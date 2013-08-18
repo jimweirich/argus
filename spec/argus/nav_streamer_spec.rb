@@ -5,7 +5,7 @@ module Argus
     Given(:remote_host) { '192.168.1.1' }
     Given(:port) { 5554 }
     Given(:socket) { flexmock("Socket", send: nil).should_ignore_missing }
-    Given(:streamer) { NavStreamer.new(remote_host: remote_host, UDPSocket: flexmock(new: socket)) }
+    Given(:streamer) { NavStreamer.new(remote_host: remote_host, socket: flexmock(new: socket)) }
 
     context "after starting" do
       Given { streamer.start }
