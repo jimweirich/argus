@@ -26,7 +26,7 @@
   drone.stop
 ```
 
-## Providing external socket
+## Using with external socket
 
 You can also use Argus by providing an externally created socket. For example, if you are using Artoo (http://artoo.io), which makes use of celluloid-io (https://github.com/celluloid/celluloid-io). Normally in this use case, you would want to NOT use the automatic navigation callbacks, as they are not guaranteed to be thread safe within Celluloid.
 
