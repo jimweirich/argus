@@ -3,7 +3,7 @@ require 'spec_helper'
 module Argus
   describe VideoStreamer do
     Given(:tcp_socket) { flexmock("TCPSocket", send: nil).should_ignore_missing }
-    Given(:streamer) { VideoStreamer.new(tcp_socket) }
+    Given(:streamer) { VideoStreamer.new(socket: tcp_socket) }
     Given(:udp_socket) { flexmock("UDPSocket", send: nil).should_ignore_missing }
 
     describe "starting the stream" do

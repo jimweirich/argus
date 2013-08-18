@@ -4,10 +4,10 @@ module Argus
   class VideoStreamer
     attr_reader :tcp_socket, :host, :port
     
-    def initialize(tcp_socket=nil, host='192.168.1.1', port=5555)
-      @tcp_socket = tcp_socket || TCPSocket.new(host, port)
-      @host = host
-      @port = port
+    def initialize(opts={})
+      @host = opts[:host] || '192.168.1.1'
+      @port = opts[:port] || 5555
+      @tcp_socket = opts[:socket] || TCPSocket.new(@host, @port)
     end
 
     def start(udp_socket=nil)
