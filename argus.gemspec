@@ -1,7 +1,7 @@
 --- !ruby/object:Gem::Specification
 name: hybridgroup-argus
 version: !ruby/object:Gem::Version
-  version: 0.3.0
+  version: 0.4.0
 platform: ruby
 authors:
 - Jim Weirich
@@ -10,11 +10,12 @@ authors:
 autorequire: 
 bindir: bin
 cert_chain: []
-date: 2013-08-18 00:00:00.000000000 Z
+date: 2013-01-19 00:00:00.000000000 Z
 dependencies:
 - !ruby/object:Gem::Dependency
   name: rspec-given
   requirement: !ruby/object:Gem::Requirement
+    none: false
     requirements:
     - - ~>
       - !ruby/object:Gem::Version
@@ -22,6 +23,7 @@ dependencies:
   type: :development
   prerelease: false
   version_requirements: !ruby/object:Gem::Requirement
+    none: false
     requirements:
     - - ~>
       - !ruby/object:Gem::Version
@@ -96,11 +98,13 @@ rdoc_options:
 require_paths:
 - lib
 required_ruby_version: !ruby/object:Gem::Requirement
+  none: false
   requirements:
   - - '>='
     - !ruby/object:Gem::Version
       version: '1.9'
 required_rubygems_version: !ruby/object:Gem::Requirement
+  none: false
   requirements:
   - - '>='
     - !ruby/object:Gem::Version
