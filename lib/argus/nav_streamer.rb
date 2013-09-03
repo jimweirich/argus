@@ -51,7 +51,7 @@ module Argus
      data, from = @socket.recvfrom(1024)
       if data.unpack("V").first == 0x55667788
         received_data
-        nav_data = NavData.new(data)
+        NavData.new(data)
       else
         nil
       end
