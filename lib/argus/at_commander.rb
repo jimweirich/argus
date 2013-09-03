@@ -62,11 +62,12 @@ module Argus
       end
     end
 
-    def reset_watchdog
+    def comwdg
       @mutex.synchronize do
         command("COMWDG")
       end
     end
+    alias reset_watchdog comwdg # For backward compatibility
 
     def ctrl(mode)
       @mutex.synchronize do
