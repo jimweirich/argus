@@ -12,7 +12,11 @@ module Argus
       @sender = opts[:sender] || Argus::UdpSender.new(socket: opts[:socket], remote_host: @host, port: port)
       @at = Argus::ATCommander.new(@sender)
       @controller = Argus::Controller.new(@at)
-      @nav = nil
+      if opts.fetch(:enable_nav_monitor, true)
+        @nav = NavMonitor.new(@controller, @host)
+      else
+        @nav = NullNavMonitor.new
+      end
     end
 
     def commander
@@ -20,11 +24,6 @@ module Argus
     end
 
     def start(enable_nav_monitor=true)
-      if enable_nav_monitor
-        @nav = NavMonitor.new(@controller, @host)
-      else
-        @nav = NullNavMonitor.new
-      end
       @nav.start
       @at.start
     end
