@@ -65,6 +65,9 @@ module Argus
       if @nav_data.bootstrap?
         @controller.demo_mode
       end
+      if @nav_data.control_command_ack?
+        @controller.ack_control_mode
+      end
       data.options.each do |opt|
         @nav_options[opt.tag] = opt if opt.tag < 100
       end
