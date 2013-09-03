@@ -28,7 +28,8 @@ module Argus
     When(:demo) { nav_data.options.first }
 
     Then { ! demo.nil? }
-    Then { demo.tag == 0 }
+    Then { demo.tag == Argus::NavTag::DEMO }
+    Then { demo.size == 148 }
 
     Then { demo.ctrl_state == 0x20000 }
     Then { demo.control_state_name == :default }

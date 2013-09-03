@@ -24,6 +24,12 @@ module Argus
       option = options[tag] || NavOptionUnknown
       option.new(raw_data)
     end
+
+    # Skip the tag and size fields, We've already handled them in the
+    # base class.
+    def self.initial_format
+      "x4"
+    end
   end
 
 end
