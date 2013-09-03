@@ -68,6 +68,12 @@ module Argus
       end
     end
 
+    def ctrl(mode)
+      @mutex.synchronize do
+        command("CTRL", "#{mode},0")
+      end
+    end
+
     private
 
     def log_time
