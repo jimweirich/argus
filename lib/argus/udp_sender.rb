@@ -1,7 +1,7 @@
 module Argus
   class UdpSender
     def initialize(opts={})
-      @udp_socket = UDPSocket.new
+      @udp_socket = opts[:socket] || UDPSocket.new
       @host = opts.fetch(:remote_host)
       @port = opts.fetch(:port, 5556)
     end
