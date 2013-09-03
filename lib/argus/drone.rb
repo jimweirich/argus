@@ -1,25 +1,30 @@
 require 'socket'
 require 'argus/nav_monitor'
+require 'argus/null_nav_monitor'
 
 module Argus
-
   class Drone
     attr_reader :controller, :nav
 
     def initialize(opts={})
-      host = opts[:remote_host] || '192.168.1.1'
+      @host = opts[:remote_host] || '192.168.1.1'
       port = opts[:post] || '5556'
-      @sender = opts[:sender] || Argus::UdpSender.new(socket: opts[:socket], remote_host: host, port: port)
+      @sender = opts[:sender] || Argus::UdpSender.new(socket: opts[:socket], remote_host: @host, port: port)
       @at = Argus::ATCommander.new(@sender)
       @controller = Argus::Controller.new(@at)
-      @nav = NavMonitor.new(@controller, host)
+      @nav = nil
     end
 
     def commander
       @at
     end
 
-    def start
+    def start(enable_nav_monitor=true)
+      if enable_nav_monitor
+        @nav = NavMonitor.new(@controller, @host)
+      else
+        @nav = NullNavMonitor.new
+      end
       @nav.start
       @at.start
     end
