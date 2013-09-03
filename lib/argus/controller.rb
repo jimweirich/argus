@@ -1,4 +1,5 @@
 require 'argus/float_encoding'
+require 'argus/ardrone_control_modes'
 
 module Argus
   class Controller
@@ -121,7 +122,12 @@ module Argus
     end
 
     def reset_watchdog
-      @at_commander.reset_watchdog
+      @at_commander.comwdg
+    end
+
+    def ack_control_mode
+      @at_commander.ctrl(ArdroneControlModes::ACK_CONTROL_MODE)
+      self
     end
 
     private

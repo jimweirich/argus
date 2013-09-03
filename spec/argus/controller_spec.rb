@@ -141,4 +141,9 @@ describe Argus::Controller do
     end
   end
 
+  describe "ack controll command" do
+    Invariant { result.should == controller }
+    When(:result) { controller.ack_control_mode }
+    Then { at.should have_received(:ctrl).with(5) }
+  end
 end
