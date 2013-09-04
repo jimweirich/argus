@@ -10,7 +10,7 @@ describe Argus::NavMonitor do
 
   context "when the monitor is started" do
     after do nav.join end
-    When { nav.start }
+    When { nav.start; Thread.pass }
     Then { streamer.should have_received(:start).once }
   end
 
