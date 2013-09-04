@@ -107,22 +107,24 @@ module Argus
 
     def config(key, value)
       @at_commander.config(key, value)
+      self
     end
 
     def demo_mode
-      @at_commander.config("general:navdata_demo", "TRUE")
+      config("general:navdata_demo", "TRUE")
     end
 
     def front_camera
-      @at_commander.config("video:video_channel", "2")
+      config("video:video_channel", "2")
     end
 
     def bottom_camera
-      @at_commander.config("video:video_channel", "1")
+      config("video:video_channel", "1")
     end
 
     def reset_watchdog
       @at_commander.comwdg
+      self
     end
 
     def ack_control_mode
