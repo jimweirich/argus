@@ -3,9 +3,9 @@ module Argus
   class NavMonitor
     attr_reader :streamer
 
-    def initialize(controller, remote_host)
+    def initialize(controller, remote_host, opts={})
       @controller = controller
-      @streamer = NavStreamer.new(remote_host: remote_host)
+      @streamer = opts.fetch(:streamer) { NavStreamer.new(remote_host: remote_host) }
       @callbacks = []
       @mutex = Mutex.new
       @nav_data = nil
@@ -28,6 +28,7 @@ module Argus
     end
 
     def join
+      stop
       @nav_thread.join
     end
 
@@ -46,8 +47,6 @@ module Argus
       @mutex.synchronize { @nav_options[tag] }
     end
 
-    private
-
     def update_nav_data(data)
       @mutex.synchronize do
         update_internal_nav_data(data)
@@ -59,6 +58,8 @@ module Argus
       puts ex.backtrace
       $stdout.flush
     end
+
+    private
 
     def update_internal_nav_data(data)
       @nav_data = data
