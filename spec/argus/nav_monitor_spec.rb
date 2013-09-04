@@ -25,17 +25,9 @@ describe Argus::NavMonitor do
         :options => nav_options)
     }
 
-    before do
-      @old_out = $stdout
-      @captured_out = StringIO.new
-      $stdout = @captured_out
-    end
-
-    after do
-      $stdout = @old_out
-    end
-
-    When { nav.update_nav_data(nav_data) }
+    When {
+      capture_io { nav.update_nav_data(nav_data) }
+    }
 
     context "when typical data is received" do
       Then { nav.data == nav_data }
@@ -67,7 +59,7 @@ describe Argus::NavMonitor do
 
     context "with a callback with errors" do
       Given { nav.callback { |data| fail "OUCH" } }
-      Then { @captured_out.string =~ /OUCH/ }
+      Then { captured_out =~ /OUCH/ }
     end
   end
 end
