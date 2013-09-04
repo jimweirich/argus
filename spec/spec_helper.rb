@@ -1,4 +1,6 @@
 #!/usr/bin/ruby -wKU
+require 'simplecov'
+SimpleCov.start
 
 require 'rspec/given'
 require 'flexmock'

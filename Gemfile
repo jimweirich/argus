@@ -8,5 +8,6 @@ gem 'rake'
 group :testing do
   gem 'rspec-given'
   gem 'pry'
-  gem 'flexmock', :require => nil
+  gem 'flexmock', :require => false
+  gem 'simplecov', :require => false
 end
