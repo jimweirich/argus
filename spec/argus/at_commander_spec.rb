@@ -7,8 +7,8 @@ describe Argus::ATCommander do
   describe "#tick" do
     Given(:expected_commands) {
       [
-        "AT\\*REF=\\d+,0",
-        "AT\\*PCMD=\\d+,0,0,0,0,0",
+        'AT\*REF=\d+,0',
+        'AT\*PCMD=\d+,0,0,0,0,0',
       ]
     }
     Given(:command_pattern) { Regexp.new('\A' + expected_commands.map { |s| "#{s}\r" }.join + '\Z') }
