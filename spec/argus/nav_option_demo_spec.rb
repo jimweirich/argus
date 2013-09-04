@@ -3,10 +3,6 @@ require 'base64'
 
 module Argus
   describe NavOptionDemo do
-    def f(float)
-      FloatEncoding.encode_float(float)
-    end
-
     # NOTE: This is a Base 64 encoded NavData packet recorded directly from the drone.
     Given(:base64_data) {
       "iHdmVdAEgA/5iwAAAAAAAAAAlAAAAAIAPAAAAADwREUAgCNFQFEiyAAAAABk" +
