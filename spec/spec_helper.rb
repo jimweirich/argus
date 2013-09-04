@@ -1,6 +1,8 @@
 #!/usr/bin/ruby -wKU
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter "spec/"
+end
 
 require 'rspec/given'
 require 'flexmock'
