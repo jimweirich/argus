@@ -21,6 +21,6 @@ module Argus
       Then { video_data_envelope.payload_size == 2048 }
     end
 
-    pending "TODO: handle invalid envelope"
+    # TODO: handle invalid envelope
   end
 end

@@ -11,8 +11,7 @@ module Argus
       Then {video_data.envelope.signature == "PaVE"}
     end
 
-    pending "TODO: handle invalid envelope"
-    pending "TODO: handle valid envelope but invalid frame"
-    
+    # TODO: handle invalid envelope
+    # TODO: handle valid envelope but invalid frame
   end
 end
