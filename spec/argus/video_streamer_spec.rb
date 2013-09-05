@@ -12,5 +12,10 @@ module Argus
       Then { udp_socket.should have_received(:close) }
     end
 
+    describe "receiving data" do
+      Given { streamer.start(udp_socket) }
+      When(:result) { streamer.receive_data }
+      Then { result.is_a?(VideoData) }
+    end
   end
 end

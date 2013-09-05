@@ -56,6 +56,7 @@ module Argus
       Then { d0.y == 20 }
       Then { d0.width == 30 }
       Then { d0.height == 40 }
+      Then { d0.distance == 50 }
       Then { d0.orientation_angle == 60.0 }
       Then { d0.camera_source == 70 }
     end

@@ -26,7 +26,7 @@ module Argus
       @local_host   = opts[:local_host]  || '0.0.0.0'
       @port         = opts[:port]        || 5554
       @socket_class = opts[:UDPSocket]   || UDPSocket
-      start_timer
+      start_timer unless opts[:disable_timer]
     end
 
     def start

@@ -77,6 +77,9 @@ describe Argus::ATCommander do
     Then { sender.should have_received(:send_packet) }
   end
 
-
+  describe "setting the interval" do
+    Given { cmdr.interval = 1.0 }
+    Then { cmdr.interval == 1.0 }
+  end
 
 end

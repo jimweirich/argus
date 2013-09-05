@@ -5,7 +5,7 @@ module Argus
     Given(:remote_host) { '192.168.1.1' }
     Given(:port) { 5554 }
     Given(:socket) { flexmock("Socket", send: nil).should_ignore_missing }
-    Given(:streamer) { NavStreamer.new(remote_host: remote_host, UDPSocket: flexmock(new: socket)) }
+    Given(:streamer) { NavStreamer.new(remote_host: remote_host, UDPSocket: flexmock(new: socket, disabled_timer: true)) }
 
     context "after starting" do
       Given { streamer.start }
@@ -22,6 +22,11 @@ module Argus
         Given { socket.should_receive(:recvfrom => bytes) }
         When(:nav_data) { streamer.receive_data }
         Then { nav_data.nil? }
+      end
+
+      context "when receiving and extra start event" do
+        Given { streamer.start }
+        Then { socket.should have_received(:close) }
       end
     end
 
