@@ -47,7 +47,7 @@ module Argus
     end
 
     %w(
-       take_off land hover emergency
+       take_off land hover disable_emergency enable_emergency
        forward backward
        left right
        up down

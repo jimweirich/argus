@@ -28,16 +28,16 @@ describe Argus::Controller do
       Then { at.should have_received(:ref).with(ref_bits).twice }
     end
 
-    context "when emergency" do
-      Given { controller.take_off }
-      When(:result) { controller.emergency }
-      Then { at.should have_received(:ref).with(ref_bits(8)) }
-    end
-
-    context "when taking off after an emergency" do
-      Given { controller.emergency }
+    context "when enable_emergency" do
+      Given { controller.enable_emergency }
       When(:result) { controller.take_off }
       Then { at.should have_received(:ref).with(ref_bits(9)) }
+    end
+
+    context "when taking off after a disable_emergency" do
+      Given { controller.disable_emergency }
+      When(:result) { controller.take_off }
+      Then { at.should have_received(:ref).with(ref_bits(8)) }
     end
 
     context "when hovering" do
@@ -117,18 +117,18 @@ describe Argus::Controller do
     Invariant { result.should == controller }
 
     context "when setting with numeric sequence" do
-      When(:result) { controller.animate(3, 2.0, 4) }
+      When(:result) { controller.animate(3, 4) }
       Then {
         at.should have_received(:config)
-          .with("control:flight_anim", "3,1073741824,4")
+          .with("control:flight_anim", "3,4")
       }
     end
 
     context "when setting with symbolic sequence" do
-      When(:result) { controller.animate(:theta_30_deg, 2.0, 4) }
+      When(:result) { controller.animate(:theta_30_deg, 4) }
       Then {
         at.should have_received(:config)
-          .with("control:flight_anim", "3,1073741824,4")
+          .with("control:flight_anim", "3,4")
       }
     end
   end
