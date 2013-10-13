@@ -51,3 +51,7 @@ You can also use Argus by providing an externally created socket. For example, i
   drone.stop
 ```
 
+## Download the SDK
+
+For additional reference, you can download the AR Drone Developer Guide (https://projects.ardrone.org/attachments/download/365/ARDrone_SDK_1_7_Developer_Guide.pdf) after signing up here (https://projects.ardrone.org/).
+
