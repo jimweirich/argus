@@ -97,6 +97,17 @@ module Argus
       self
     end
 
+    def animate(selection, hertz, duration)
+      selection = FlightAnimation.lookup_value(selection)
+      value = [
+        selection,
+        FloatEncoding.encode_float(hertz),
+        duration
+      ].join(',')
+      @at_commander.config("control:flight_anim",value)
+      self
+    end
+
     def enable_detection(colors, type=10, select=32)
       config("detect:enemy_colors",colors.to_s)
       config("detect:detect_type", type.to_s)

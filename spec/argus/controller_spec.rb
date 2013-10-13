@@ -113,6 +113,26 @@ describe Argus::Controller do
     end
   end
 
+  describe "animate command" do
+    Invariant { result.should == controller }
+
+    context "when setting with numeric sequence" do
+      When(:result) { controller.animate(3, 2.0, 4) }
+      Then {
+        at.should have_received(:config)
+          .with("control:flight_anim", "3,1073741824,4")
+      }
+    end
+
+    context "when setting with symbolic sequence" do
+      When(:result) { controller.animate(:theta_30_deg, 2.0, 4) }
+      Then {
+        at.should have_received(:config)
+          .with("control:flight_anim", "3,1073741824,4")
+      }
+    end
+  end
+
   describe "enabled detection command" do
     Invariant { result.should == controller }
 
