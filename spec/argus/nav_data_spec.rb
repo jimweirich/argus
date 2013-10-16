@@ -12,6 +12,7 @@ module Argus
 
     Then { nav_data.sequence_number == 173064 }
     Then { nav_data.vision_flag == 0 }
+    Then { nav_data.raw == raw_nav_bytes }
 
     describe "sequence number" do
       Given(:seq_num) { 1234 }

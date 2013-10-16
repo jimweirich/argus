@@ -25,8 +25,8 @@ module Argus
       @remote_host  = opts.fetch(:remote_host)
       @local_host   = opts[:local_host]  || '0.0.0.0'
       @port         = opts[:port]        || 5554
-      @socket_class = opts[:socket]   || UDPSocket
-      start_timer
+      @socket_class = opts[:UDPSocket]   || UDPSocket
+      start_timer unless opts[:disable_timer]
     end
 
     def start
@@ -51,7 +51,7 @@ module Argus
      data, from = @socket.recvfrom(1024)
       if data.unpack("V").first == 0x55667788
         received_data
-        nav_data = NavData.new(data)
+        NavData.new(data)
       else
         nil
       end

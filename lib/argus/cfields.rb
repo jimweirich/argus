@@ -22,7 +22,7 @@ module Argus
       end
 
       def format_string
-        @format_string ||= "x4"
+        @format_string ||= (defined?(initial_format) ? initial_format : "")
       end
 
       def allot(n=1)

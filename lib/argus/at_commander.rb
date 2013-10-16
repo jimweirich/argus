@@ -3,6 +3,7 @@ require 'thread'
 module Argus
   class ATCommander
     attr_reader :timestamps
+    attr_accessor :interval
 
     def initialize(sender)
       @sender = sender
@@ -44,10 +45,6 @@ module Argus
       @thread.join if @thread
     end
 
-    def interval=(new_interval)
-      @mutex.synchronize do @interval = new_interval end
-    end
-
     def ref(data)
       @mutex.synchronize do @ref_data = data end
     end
@@ -62,9 +59,16 @@ module Argus
       end
     end
 
-    def reset_watchdog
+    def comwdg
       @mutex.synchronize do
         command("COMWDG")
+      end
+    end
+    alias reset_watchdog comwdg # For backward compatibility
+
+    def ctrl(mode)
+      @mutex.synchronize do
+        command("CTRL", "#{mode},0")
       end
     end
 

@@ -9,6 +9,10 @@ module Bytes
     [n].pack("V").unpack("C*")
   end
 
+  def float32(f)
+    [f].pack("e").unpack("C*")
+  end
+
   def make_nav_data(*options)
     result = options.flatten
     add_checksum(result)

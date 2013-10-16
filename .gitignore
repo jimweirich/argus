@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 .rvmrc
+=======
+Gemfile.lock
+>>>>>>> jimweirich/master
 .rbx
 pkg
 data
 TAGS
+examples/x
+coverage
+navdata.raw64

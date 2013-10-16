@@ -33,6 +33,7 @@ Argus is extremely experimental at this point.  Use at your own risk.
       'README.md',
       'MIT-LICENSE'
     ]
+    s.license = 'MIT-LICENSE'
 
     s.rdoc_options = BASE_RDOC_OPTIONS
 

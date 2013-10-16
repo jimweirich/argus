@@ -4,17 +4,21 @@ require 'argus/nav_monitor'
 module Argus
 
   class Drone
-    attr_reader :controller, :enable_nav_monitor
+    attr_reader :controller, :nav
 
     def initialize(opts={})
-      @host = opts[:remote_host] || '192.168.1.1'
-      @port = opts[:post] || '5556'
-      @socket = opts[:socket] || UDPSocket.new
-      @sender = opts[:sender] || Argus::UdpSender.new(socket: @socket, remote_host: @host, port: @port)
-      @at = Argus::ATCommander.new(@sender)
-      @controller = Argus::Controller.new(@at)
-      
-      @enable_nav_monitor = false
+      host = opts[:remote_host] || '192.168.1.1'
+      port = opts[:post] || '5556'
+      @sender = opts[:sender] || Argus::UdpSender.new(socket: opts[:socket], remote_host: host, port: port)
+      @at = opts[:commander] || Argus::ATCommander.new(@sender)
+      @controller = opts[:controller] || Argus::Controller.new(@at)
+      if opts[:nav_monitor]
+        @nav = opts[:nav_monitor]
+      elsif opts.fetch(:enable_nav_monitor, true)
+        @nav =  NavMonitor.new(@controller, host)
+      else
+        @nav = NullNavMonitor.new
+      end
     end
 
     def commander
@@ -22,13 +26,7 @@ module Argus
     end
 
     def start(enable_nav_monitor=true)
-      @enable_nav_monitor = enable_nav_monitor
-      
-      if enable_nav_monitor
-        @nav = NavMonitor.new(@controller, @host)
-        @nav.start
-      end
-
+      @nav.start
       @at.start
     end
 
@@ -36,10 +34,10 @@ module Argus
       @controller.land
 
       @at.stop
-      @nav.stop if enable_nav_monitor
+      @nav.stop
 
       @at.join
-      @nav.join if enable_nav_monitor
+      @nav.join
     end
 
     def nav_callback(*args, &block)

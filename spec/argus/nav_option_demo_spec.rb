@@ -3,10 +3,6 @@ require 'base64'
 
 module Argus
   describe NavOptionDemo do
-    def f(float)
-      FloatEncoding.encode_float(float)
-    end
-
     # NOTE: This is a Base 64 encoded NavData packet recorded directly from the drone.
     Given(:base64_data) {
       "iHdmVdAEgA/5iwAAAAAAAAAAlAAAAAIAPAAAAADwREUAgCNFQFEiyAAAAABk" +
@@ -28,7 +24,8 @@ module Argus
     When(:demo) { nav_data.options.first }
 
     Then { ! demo.nil? }
-    Then { demo.tag == 0 }
+    Then { demo.tag == Argus::NavTag::DEMO }
+    Then { demo.size == 148 }
 
     Then { demo.ctrl_state == 0x20000 }
     Then { demo.control_state_name == :default }

@@ -18,7 +18,7 @@ tick
 ref(data)
 pcmd(data)
 config(key,data)
-reset_watchdog</panel_attributes>
+comwdg</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -49,9 +49,9 @@ send_packet(data)</panel_attributes>
     <type>com.umlet.element.Class</type>
     <coordinates>
       <x>320</x>
-      <y>410</y>
+      <y>350</y>
       <w>300</w>
-      <h>350</h>
+      <h>370</h>
     </coordinates>
     <panel_attributes>Controller
 --
@@ -73,7 +73,8 @@ config(key, value)
 demo_mode
 front_camera
 bottom_camera
-reset_watchdog</panel_attributes>
+reset_watchdog
+ack_control_mode</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -116,10 +117,10 @@ option(tag)
       <x>440</x>
       <y>270</y>
       <w>50</w>
-      <h>160</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>30;140;30;30</additional_attributes>
+    <additional_attributes>30;80;30;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -127,10 +128,10 @@ option(tag)
       <x>590</x>
       <y>340</y>
       <w>140</w>
-      <h>140</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>120;30;30;120</additional_attributes>
+    <additional_attributes>120;30;30;60</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Relation</type>
@@ -147,12 +148,12 @@ option(tag)
     <type>com.umlet.element.Relation</type>
     <coordinates>
       <x>210</x>
-      <y>280</y>
-      <w>160</w>
-      <h>150</h>
+      <y>300</y>
+      <w>130</w>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>140;130;30;30</additional_attributes>
+    <additional_attributes>110;70;30;30</additional_attributes>
   </element>
   <element>
     <type>com.umlet.element.Class</type>
