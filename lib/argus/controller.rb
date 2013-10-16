@@ -109,7 +109,6 @@ module Argus
         selection,
         duration
       ].join(',')
-      puts value.inspect
       @at_commander.config("control:flight_anim",value)
       self
     end
