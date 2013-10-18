@@ -8,7 +8,7 @@ module Argus
 
     def initialize(opts={})
       host = opts[:remote_host] || '192.168.1.1'
-      port = opts[:post] || '5556'
+      port = opts[:port] || '5556'
       @sender = opts[:sender] || Argus::UdpSender.new(socket: opts[:socket], remote_host: host, port: port)
       @at = opts[:commander] || Argus::ATCommander.new(@sender)
       @controller = opts[:controller] || Argus::Controller.new(@at)
