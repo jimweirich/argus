@@ -3,7 +3,7 @@ module Argus
     NUMBERS = [
       MAJOR = 0,
       MINOR = 5,
-      BUILD = 0,
+      BUILD = 1,
     ]
   end
   VERSION = Version::NUMBERS.join('.')
