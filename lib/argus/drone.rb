@@ -25,7 +25,7 @@ module Argus
       @at
     end
 
-    def start(enable_nav_monitor=true)
+    def start
       @nav.start
       @at.start
     end
