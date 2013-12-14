@@ -10,4 +10,8 @@ group :testing do
   gem 'pry'
   gem 'flexmock', :require => false
   gem 'simplecov', :require => false
+  
+  platforms :rbx do
+    gem 'rubinius-coverage'
+  end
 end
