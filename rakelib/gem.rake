@@ -12,7 +12,7 @@ else
     '--title', 'Argus -- Parrot AR Drone Ruby API'
   ]
   SPEC = Gem::Specification.new do |s|
-    s.name = 'hybridgroup-argus'
+    s.name = 'argus'
     s.version = Argus::VERSION
     s.summary = "Ruby API for a Parrot AD Drone Quadcopter"
     s.description = <<-EOF.delete "\n"

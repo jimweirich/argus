@@ -1,5 +1,5 @@
 --- !ruby/object:Gem::Specification
-name: hybridgroup-argus
+name: argus
 version: !ruby/object:Gem::Version
   version: 0.4.0
 platform: ruby
