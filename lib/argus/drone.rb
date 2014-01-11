@@ -1,14 +1,14 @@
 require 'socket'
 require 'argus/nav_monitor'
-require 'argus/null_nav_monitor'
 
 module Argus
+
   class Drone
     attr_reader :controller, :nav
 
     def initialize(opts={})
       host = opts[:remote_host] || '192.168.1.1'
-      port = opts[:post] || '5556'
+      port = opts[:port] || '5556'
       @sender = opts[:sender] || Argus::UdpSender.new(socket: opts[:socket], remote_host: host, port: port)
       @at = opts[:commander] || Argus::ATCommander.new(@sender)
       @controller = opts[:controller] || Argus::Controller.new(@at)
@@ -45,14 +45,14 @@ module Argus
     end
 
     %w(
-       take_off land hover emergency
+       take_off land hover disable_emergency enable_emergency
        forward backward
        left right
        up down
        turn_left turn_right
        front_camera bottom_camera
        config
-       led
+       led animate
        reset_watchdog
     ).each do |meth|
       define_method(meth) { |*args|

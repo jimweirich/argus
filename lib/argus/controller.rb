@@ -24,9 +24,15 @@ module Argus
       update_ref
     end
 
-    def emergency
+    def enable_emergency(state=false)
+      @flying = true
+      @emergency = state
+      update_ref
+    end
+
+    def disable_emergency(state=true)
       @flying = false
-      @emergency = true
+      @emergency = state
       update_ref
     end
 
@@ -95,6 +101,16 @@ module Argus
         duration
       ].join(',')
       @at_commander.config("leds:leds_anim",value)
+      self
+    end
+
+    def animate(selection, duration)
+      selection = FlightAnimation.lookup_value(selection)
+      value = [
+        selection,
+        duration
+      ].join(',')
+      @at_commander.config("control:flight_anim",value)
       self
     end
 

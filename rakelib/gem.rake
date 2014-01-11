@@ -4,7 +4,7 @@ require './lib/argus/version'
 if ! defined?(Gem)
   puts "Package Target requires RubyGems"
 else
-  PKG_FILES = FileList['README.md', 'Rakefile', 'lib/*.rake', 'lib/*.rb', 'lib/argus/*.rb', 'spec/*.rb', 'spec/argus/*.rb']
+  PKG_FILES = FileList['README.md', 'Rakefile', 'lib/*.rake', 'lib/*.rb', 'lib/argus/*.rb', 'spec/*.rb', 'spec/argus/*.rb', 'spec/support/*.rb']
   BASE_RDOC_OPTIONS = [
     '--line-numbers',
     '--show-hash',

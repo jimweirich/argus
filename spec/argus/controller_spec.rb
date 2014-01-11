@@ -29,16 +29,16 @@ describe Argus::Controller do
         Then { at.should have_received(:ref).with(ref_bits).twice }
       end
 
-      context "when emergency" do
-        Given { controller.take_off }
-        When(:result) { controller.emergency }
-        Then { at.should have_received(:ref).with(ref_bits(8)) }
-      end
-
-      context "when taking off after an emergency" do
-        Given { controller.emergency }
+      context "when enable_emergency" do
+        Given { controller.enable_emergency }
         When(:result) { controller.take_off }
         Then { at.should have_received(:ref).with(ref_bits(9)) }
+      end
+
+      context "when taking off after a disable_emergency" do
+        Given { controller.disable_emergency }
+        When(:result) { controller.take_off }
+        Then { at.should have_received(:ref).with(ref_bits(8)) }
       end
 
       context "when hovering" do
@@ -164,4 +164,5 @@ describe Argus::Controller do
       Then { at.should have_received(:ctrl).with(5) }
     end
   end
+
 end
